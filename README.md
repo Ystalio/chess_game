@@ -1,2 +1,2 @@
 # chess_game
-chess game player vs player (without I.A)
+chess game player vs player (without I.A) Test vim
