@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 void print_binary_chess_table(int (*b)[8]){
     int i,j;
     for(i=0;i<8;i++){

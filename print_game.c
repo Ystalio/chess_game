@@ -1,13 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
 #include "Struct_Piece.h"
+
+#ifdef __WIN32__
+#include <windows.h>
 
 void color(int t,int f)
 {
         HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
             SetConsoleTextAttribute(H,f*16+t);
 }
+
+#else // Not Windows platform
+
+//FIXME support colors for VT100-like terminals (escape codes)
+void color(int t,int f)
+{
+	(void)t;
+	(void)f;
+}
+
+#endif
 
 void print_game(Echiquier* E){ //fonction qui affiche l'échiquier en console
     static const char* code = "ptcfrd";
