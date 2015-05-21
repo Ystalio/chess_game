@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="train" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\train" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\train" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="Struct_Piece.h" />
+		<Unit filename="avail_move.h" />
+		<Unit filename="available_bishop_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="available_king_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="available_knight_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="available_pawn_attacked.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="available_pawn_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="available_queen_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="available_tower_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="castle_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="debug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hunt_mat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="initialisation_chess.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="modification_tab.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="move_piece.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="move_piece.h" />
+		<Unit filename="print_chess_table.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="print_game.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="verification_player.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

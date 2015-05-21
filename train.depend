@@ -1,0 +1,109 @@
+# depslib dependency file v1.0
+1409661722 source:c:\program files\programmation\echec\train\print_chess_table.c
+
+1432202135 source:c:\program files\programmation\echec\train\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+	"move_piece.h"
+	"initialisation_chess.h"
+
+1431873523 source:c:\program files\programmation\echec\train\available_pawn_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1431884610 c:\program files\programmation\echec\train\struct_piece.h
+
+1407344970 source:c:\program files\programmation\echec\train\allocation_2dtab.c
+	<stdlib.h>
+
+1410010575 source:c:\program files\programmation\echec\train\available_bishop_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1431878000 c:\program files\programmation\echec\train\avail_move.h
+	"Struct_Piece.h"
+
+1410001468 source:c:\program files\programmation\echec\train\available_knight_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1410011553 source:c:\program files\programmation\echec\train\available_tower_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1409672469 source:c:\program files\programmation\echec\train\available_queen_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1431892228 source:c:\program files\programmation\echec\train\available_king_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1432070184 source:c:\program files\programmation\echec\train\hunt_mat.c
+	<stdio.h>
+	<stdlib.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1431767375 source:c:\program files\programmation\echec\train\modification_tab.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1408874472 source:c:\program files\programmation\echec\train\verification_player.c
+	"Struct_Piece.h"
+
+1409596253 source:c:\program files\programmation\echec\train\initialisation_chess.c
+
+1432202113 c:\program files\programmation\echec\train\initialisation_chess.h
+
+1432201128 source:c:\program files\programmation\echec\train\move_piece.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<string.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+	"move_piece.h"
+
+1431862033 c:\program files\programmation\echec\train\move_piece.h
+
+1409857112 source:c:\program files\programmation\echec\train\print_game.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	"Struct_Piece.h"
+
+1431872340 source:c:\program files\programmation\echec\train\debug.c
+	<stdio.h>
+	<stdlib.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+	"move_piece.h"
+
+1410012060 source:c:\program files\programmation\echec\train\available_pawn_attacked.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1431889570 source:c:\program files\programmation\echec\train\castle.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1432201117 source:c:\program files\programmation\echec\train\mat.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+	"move_piece.h"
+
+1432197947 source:c:\program files\programmation\echec\train\castle_move.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+	"move_piece.h"
+
