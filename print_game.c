@@ -5,7 +5,6 @@
 
 void print_game(Echiquier* E){ //fonction qui affiche l'échiquier en console
     static const char* code = "ptcfrd";
-    static int col[3] = {12,15,0};
     int x,y;
     printf("-----------------\n");
     for(x=0;x<LARGEUR;x++)
@@ -17,11 +16,16 @@ void print_game(Echiquier* E){ //fonction qui affiche l'échiquier en console
 
 		 int fcolor = TCOLOR_BLACK;
 		 int bcolor = TCOLOR_WHITE;
-		 if(col[P.c] == black) {
-			 fcolor = TCOLOR_WHITE;
+		 if(P.c == black) {
+			 fcolor = TCOLOR_RED;
 			 bcolor = TCOLOR_BLACK;
 		 }
-		 else if(col[P.c] == nothing) {
+		 else if(P.c == white) {
+             fcolor = TCOLOR_WHITE;
+             bcolor = TCOLOR_BLACK;
+		 }
+		 else if(P.c == nothing) {
+		     fcolor = TCOLOR_BLACK;
 			 bcolor = TCOLOR_BLACK;
 		 }
 

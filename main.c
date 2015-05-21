@@ -27,8 +27,14 @@ int main(int argc, char *argv[])
         printf("Vous etes en echec !\n");
         }
         move_piece(&B);
-
-       // print_game(&B);
+       /* printf("\n----------blacks_positions------------\n");
+        print_binary_chess_table(B.blacks_position);
+        printf("\n---------whites_position----------\n");
+        print_binary_chess_table(B.whites_position);
+        printf("\n");
+        printf("a6 : %d, %d, (%d,%d), %d\n", B.t[2][0].t, B.t[2][0].c,B.t[2][0].p.posx,B.t[2][0].p.posy,B.t[2][0].m);
+        getchar();*/
+       //print_game(&B);
 
     }while(!mat(&B));
     char *player;

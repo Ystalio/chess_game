@@ -7,21 +7,20 @@
 #include <stdlib.h>
 
 int color_to_wincode(enum term_colors color) {
-	switch(color):
+	switch(color){
 	case TCOLOR_WHITE:
 		return 15;
 	case TCOLOR_BLACK:
 		return 0;
 	case TCOLOR_RED:
-		return 4;
+		return 12; //just the red which was too dark
 	}
 
 	return 0;
 }
 
 void term_color_set(enum term_colors fore, enum term_colors back) {
-	// FIXME maybe not mapped to good colors on Windows console?
-	
+
 	// convert to Windows codes
 	int code = color_to_wincode(fore) + color_to_wincode(back)*16;
 
@@ -53,7 +52,7 @@ int color_to_vtcode(enum term_colors color) {
 
 void term_color_set(enum term_colors fore, enum term_colors back) {
 	// not really clean and a bit error-prone, but should work
-	
+
 	printf("\x1B[%d;%dm", color_to_vtcode(fore)+30, color_to_vtcode(back)+40);
 	fflush(stdout);
 }
