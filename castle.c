@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "Struct_Piece.h"
 #include "avail_move.h"
 

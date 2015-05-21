@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
 
+#include "platforms.h"
 #include "Struct_Piece.h"
 #include "avail_move.h"
 #include "move_piece.h"
@@ -19,7 +19,9 @@ int main(int argc, char *argv[])
     double end_game;
     do{//loop to start a new game
     do{//loop to change player until mat
-        system("cls");//Je sais c'est mal mais j'ai pas envie de m'faire chier pour le moment 8D .|.. *petit doigt d'honneur pour la forme*
+
+		term_clear(); // un peu mieux ;)
+
         print_game(&B);
         if(hunt_chess(&B)){
         printf("Vous etes en echec !\n");
@@ -35,7 +37,8 @@ int main(int argc, char *argv[])
         break;
         case JOUEUR_NOIR : player = "noir";
     }
-    system("cls");//Mouahahah il en restait 1 ! :D cf ligne 21 .|.. *petit doigt... toujours pour la forme 8D* et fais pas chier suffit de remplacer par clear !
+	term_clear();
+
     print_game(&B);
     printf("\nJoueur %s, vous etes echec et mat !\n",player);
     getchar();

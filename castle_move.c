@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
 
 #include "Struct_Piece.h"
 #include "avail_move.h"

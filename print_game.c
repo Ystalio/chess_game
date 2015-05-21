@@ -1,13 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
+#include "platforms.h"
 #include "Struct_Piece.h"
-
-void color(int t,int f)
-{
-        HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
-            SetConsoleTextAttribute(H,f*16+t);
-}
 
 void print_game(Echiquier* E){ //fonction qui affiche l'échiquier en console
     static const char* code = "ptcfrd";
@@ -20,9 +14,22 @@ void print_game(Echiquier* E){ //fonction qui affiche l'échiquier en console
       {
          Piece P = E->t[x][y];
          printf("|");
-         color(col[(int)(P.c)],0);
+
+		 int fcolor = TCOLOR_BLACK;
+		 int bcolor = TCOLOR_WHITE;
+		 if(col[P.c] == black) {
+			 fcolor = TCOLOR_WHITE;
+			 bcolor = TCOLOR_BLACK;
+		 }
+		 else if(col[P.c] == nothing) {
+			 bcolor = TCOLOR_BLACK;
+		 }
+
+		 term_color_set(fcolor, bcolor);
+
          printf("%c",code[(int)(P.t)]);
-         color(15,0);
+
+		 term_color_set(TCOLOR_WHITE, TCOLOR_BLACK);
       }
       printf("|%d\n-----------------\n",8-x);
     }
