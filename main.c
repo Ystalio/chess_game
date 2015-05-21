@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
         system("cls");//Je sais c'est mal mais j'ai pas envie de m'faire chier pour le moment 8D .|.. *petit doigt d'honneur pour la forme*
         print_game(&B);
         if(hunt_chess(&B)){
-        printf("Vous etes en echec !");
+        printf("Vous etes en echec !\n");
         }
         move_piece(&B);
 
