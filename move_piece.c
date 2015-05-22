@@ -31,7 +31,7 @@ Position2 move_piece(Echiquier *E){
     char movement[POSITION_BUFFER_LEN];
     Echiquier E_test;
 	int correct_move = 0;
-	
+
 	// used to display an example until a valid move is given
 	static int example_move = 1;
 
@@ -40,8 +40,16 @@ Position2 move_piece(Echiquier *E){
 	Position initiale;
 	Position finale;
 
+    char *joueur_color;
+    switch(E->joueur){
+        case JOUEUR_BLANC : joueur_color = "[Blanc]";
+        break;
+        case JOUEUR_NOIR : joueur_color = "[Noir]";
+        break;
+    }
+
 	while(!correct_move) {
-		printf("\nIndiquer le deplacement %s: ", example_move ? "(sous la forme 'a2a4' par exemple) " : "");
+		printf("\n%s Indiquer le deplacement %s: ",joueur_color, example_move ? "(sous la forme 'a2a4' par exemple) " : "");
 
 		if(fgets(movement, POSITION_BUFFER_LEN, stdin) == NULL) {
 			// error on stdin or end of input, exit as soon as possible
