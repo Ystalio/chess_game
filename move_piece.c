@@ -6,6 +6,7 @@
 #include "Struct_Piece.h"
 #include "avail_move.h"
 #include "move_piece.h"
+#include "platforms.h"
 
 // 4 characters for position and 1 for ending '\0'
 #define POSITION_BUFFER_LEN		5
@@ -47,7 +48,7 @@ Position2 move_piece(Echiquier *E){
 			//XXX not very clean
 			exit(1);
 		}
-		fflush(stdin);   //necessary because \n never used at the last printf
+		flush_stdin();
 
 		// check if movement is well formated!
 		if(isalpha(movement[0]) && isdigit(movement[1])

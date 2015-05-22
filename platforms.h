@@ -24,4 +24,10 @@ void term_color_set(enum term_colors fore, enum term_colors back);
 void term_clear(void);
 
 
+/**
+ * Flush the standard input stream to remove as much things as possible.
+ */
+void flush_stdin(void);
+
+
 #endif //_PLATFORMS_H
