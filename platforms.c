@@ -34,6 +34,11 @@ void term_clear(void) {
 }
 
 
+void flush_stdin(void) {
+	fflush(stdin);
+}
+
+
 #else //__WIN32__
 // non-windows platforms (assume UNIX-like, with more or less POSIX compliance)
 
@@ -62,6 +67,14 @@ void term_color_set(enum term_colors fore, enum term_colors back) {
 void term_clear(void) {
 	printf("\x1B[2J\x1B[H");
 	fflush(stdout);
+}
+
+void flush_stdin(void) {
+	// don't know why there is no good way to do that in POSIX spec...
+	int c;
+	do {
+		c = getchar();
+	} while(c != '\n' && c != EOF);
 }
 
 #endif
