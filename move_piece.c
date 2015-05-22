@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "Struct_Piece.h"
 #include "avail_move.h"
 #include "move_piece.h"
 
+// 4 characters for position and 1 for ending '\0'
+#define POSITION_BUFFER_LEN		5
 
 
 struct Piece f(int a,int b,int c,int d,int e){  //fonction affectation de valeurs à une structure
@@ -24,16 +27,46 @@ char* strstr(const char* chaine, const char* chaineARechercher);
 
 Position2 move_piece(Echiquier *E){
     int r=0,end =0; //r necessary to refresh king position if the move is accepted
-    char movement[5];
+    char movement[POSITION_BUFFER_LEN];
     Echiquier E_test;
+	int correct_move = 0;
+	
+	// used to display an example until a valid move is given
+	static int example_move = 1;
 
     E_test = *E; //allow to work on the chess without change the game
-    printf("\nIndiquer le deplacement : ");
-    scanf("%s",movement); //exemple : a2a4 : no caps !
-    fflush(stdin);   //necessary because \n never used at the last printf
 
-    Position initiale   = {movement[0]-'a', 8 - movement[1]+'0'}; //structure who stack the positions
-    Position finale     = {movement[2]-'a', 8 - movement[3]+'0'};
+	Position initiale;
+	Position finale;
+
+	while(!correct_move) {
+		printf("\nIndiquer le deplacement %s: ", example_move ? "(sous la forme 'a2a4' par exemple) " : "");
+
+		if(fgets(movement, POSITION_BUFFER_LEN, stdin) == NULL) {
+			// error on stdin or end of input, exit as soon as possible
+			//XXX not very clean
+			exit(1);
+		}
+		fflush(stdin);   //necessary because \n never used at the last printf
+
+		// check if movement is well formated!
+		if(isalpha(movement[0]) && isdigit(movement[1])
+				&& isalpha(movement[2]) && isdigit(movement[3]))
+		{
+			initiale.posx = movement[0] - ( islower(movement[0]) ?  'a' : 'A');
+			initiale.posy = 8 - (movement[1] - '0');
+
+			finale.posx = movement[2] - ( islower(movement[2]) ?  'a' : 'A');
+			finale.posy = 8 - (movement[3] - '0');
+
+			correct_move = 1;
+			example_move = 0;
+		}
+		else {
+			printf("Mouvement invalide (ordre origine puis destination, forme attendue : 'a2a4' ou 'C2C3')\n");
+		}
+	}
+
 
     Piece Pini = E->t[initiale.posy][initiale.posx]; //simplify the expression
     Tab temp;
