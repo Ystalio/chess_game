@@ -2,7 +2,9 @@
 #include "avail_move.h"
 
 Tab avail_pawn_attacked(Position *Pini, Echiquier *E){
+
     int i,j;
+
     Tab avail_move = {.t =  {{0,0,0,0,0,0,0,0},
                              {0,0,0,0,0,0,0,0},
                              {0,0,0,0,0,0,0,0},
@@ -14,8 +16,10 @@ Tab avail_pawn_attacked(Position *Pini, Echiquier *E){
                             }};
     i = Pini->posy;
     j = Pini->posx;
+
     int (*adverse)[LARGEUR];
     int (*mine_piece)[LARGEUR];
+
     switch(E->t[i][j].c){
         case white : adverse = E->blacks_position;
                      mine_piece = E->whites_position;
@@ -32,27 +36,36 @@ Tab avail_pawn_attacked(Position *Pini, Echiquier *E){
         case white :
                         if(i-1 >= 0){ //verification if inside of array
                             if(j-1 >= 0){
-                                if(mine_piece[i-1][j-1]==0){avail_move.t[i-1][j-1]=1;} //capture forward on its left
+                                if(mine_piece[i-1][j-1]==0){
+                                    avail_move.t[i-1][j-1]=1; //capture forward on its left
+                                }
                             }
                         }
                         if(i-1 >=0 && j+1 < LARGEUR){ //verification if inside of array
-                            if(mine_piece[i-1][j+1]==0){avail_move.t[i-1][j+1]=1;} //capture forward on its right
+                            if(mine_piece[i-1][j+1]==0){
+                                avail_move.t[i-1][j+1]=1; //capture forward on its right
+                            }
                         }
         break;
 
         case black :
                         if(i+1<LARGEUR){ //verification if inside of array
                             if(j-1>=0){
-                                if(mine_piece[i+1][j-1]==0){avail_move.t[i+1][j-1]=1;} //capture forward on its left
+                                if(mine_piece[i+1][j-1]==0){
+                                    avail_move.t[i+1][j-1]=1; //capture forward on its left
+                                }
                             }
                         }
                         if(i+1<LARGEUR && j+1<LARGEUR){ //verification if inside of array
-                            if(mine_piece[i+1][j+1]==0){avail_move.t[i+1][j+1]=1;} //capture forward on its right
+                            if(mine_piece[i+1][j+1]==0){
+                                avail_move.t[i+1][j+1]=1; //capture forward on its right
+                            }
                         }
         break;
         case nothing :
         break;
     }
+
     return avail_move;
 }
 

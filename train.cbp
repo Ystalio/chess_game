@@ -77,6 +77,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="move_piece.h" />
+		<Unit filename="platforms.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="platforms.h" />
 		<Unit filename="print_chess_table.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -38,20 +38,8 @@ int mat(Echiquier *E){
                                     E_mat_test.whites_position[k][l]=0;
 
                                     if(!hunt_chess(&E_mat_test)){
-                                  /*printf("\ntest : %d,%d,%d,%d\n",i,j,k,l);
-                                    printf("\n-----------E_mat_test-----------\n");
-                                    print_game(&E_mat_test);
-                                    printf("\n--------------------------------\n");
-                                    printf("\njoueur : %d\n",E_mat_test.joueur);
-                                    printf("\nlast move : (%d,%d)\n",E_mat_test.last_move.posx,E_mat_test.last_move.posy);
-                                    printf("------------------whites_position--------------\n");
-                                    print_binary_chess_table(E_mat_test.whites_position);                                  //all this just for debug
-                                    printf("\n------------------Blacks_position--------------\n");
-                                    print_binary_chess_table(E_mat_test.blacks_position);
-                                    printf("\n---------------white_king----------------\n");
-                                    print_binary_chess_table(E_mat_test.white_king);
-                                    getchar();*/
-                                        r=0;}
+                                        r=0;
+                                    }
                                 }
                         }
                     }

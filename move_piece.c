@@ -26,7 +26,7 @@ struct Position g(int a,int b){ //Same, used for record the position of the piec
 int castle_move(Position *finale,Echiquier *E);
 char* strstr(const char* chaine, const char* chaineARechercher);
 
-Position2 move_piece(Echiquier *E){
+void move_piece(Echiquier *E){
     int r=0,end =0; //r necessary to refresh king position if the move is accepted
     char movement[POSITION_BUFFER_LEN];
     Echiquier E_test;
@@ -235,6 +235,6 @@ Position2 move_piece(Echiquier *E){
         printf("Vous ne pouvez deplacer que les pieces %s\n", p);
         getchar();
     }
-    Position2 R = {initiale.posx,initiale.posy,finale.posx,finale.posy,temp}; //instruction for the debug
-    return R;
+    //Position2 R = {initiale.posx,initiale.posy,finale.posx,finale.posy,temp}; //instruction for the debug
+   // return R;
 }

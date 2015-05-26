@@ -107,3 +107,112 @@
 	"avail_move.h"
 	"move_piece.h"
 
+1432487414 source:c:\program files\programmation\chess_game\available_bishop_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1431884610 c:\program files\programmation\chess_game\struct_piece.h
+
+1432487020 c:\program files\programmation\chess_game\avail_move.h
+	"Struct_Piece.h"
+
+1432487686 source:c:\program files\programmation\chess_game\available_king_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1432487912 source:c:\program files\programmation\chess_game\available_knight_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1410012060 source:c:\program files\programmation\chess_game\available_pawn_attacked.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1431873523 source:c:\program files\programmation\chess_game\available_pawn_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1409672469 source:c:\program files\programmation\chess_game\available_queen_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1410011553 source:c:\program files\programmation\chess_game\available_tower_move.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1432224033 source:c:\program files\programmation\chess_game\castle_move.c
+	<stdio.h>
+	<stdlib.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+	"move_piece.h"
+
+1432486885 c:\program files\programmation\chess_game\move_piece.h
+
+1431872340 source:c:\program files\programmation\chess_game\debug.c
+	<stdio.h>
+	<stdlib.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+	"move_piece.h"
+
+1432070184 source:c:\program files\programmation\chess_game\hunt_mat.c
+	<stdio.h>
+	<stdlib.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1432227725 source:c:\program files\programmation\chess_game\main.c
+	<stdio.h>
+	<stdlib.h>
+	"platforms.h"
+	"Struct_Piece.h"
+	"avail_move.h"
+	"move_piece.h"
+	"initialisation_chess.h"
+
+1432305855 c:\program files\programmation\chess_game\platforms.h
+
+1432202113 c:\program files\programmation\chess_game\initialisation_chess.h
+
+1432224033 source:c:\program files\programmation\chess_game\mat.c
+	<stdio.h>
+	<stdlib.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+	"move_piece.h"
+
+1431767375 source:c:\program files\programmation\chess_game\modification_tab.c
+	"Struct_Piece.h"
+	"avail_move.h"
+
+1432486839 source:c:\program files\programmation\chess_game\move_piece.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	"Struct_Piece.h"
+	"avail_move.h"
+	"move_piece.h"
+	"platforms.h"
+
+1432305855 source:c:\program files\programmation\chess_game\platforms.c
+	"platforms.h"
+	<stdio.h>
+	<windows.h>
+	<stdlib.h>
+
+1432224033 source:c:\program files\programmation\chess_game\print_chess_table.c
+	<stdio.h>
+
+1432227311 source:c:\program files\programmation\chess_game\print_game.c
+	<stdio.h>
+	<stdlib.h>
+	"platforms.h"
+	"Struct_Piece.h"
+
+1408874472 source:c:\program files\programmation\chess_game\verification_player.c
+	"Struct_Piece.h"
+
+1432486838 source:c:\program files\programmation\chess_game\minmax_algo.c
+

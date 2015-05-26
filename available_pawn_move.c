@@ -2,7 +2,9 @@
 #include "avail_move.h"
 
 Tab avail_pawn_move(Position *Pini, Echiquier *E){
+
     int i,j;
+
     Tab avail_move = {.t =  {{0,0,0,0,0,0,0,0},
                              {0,0,0,0,0,0,0,0},
                              {0,0,0,0,0,0,0,0},
@@ -14,8 +16,10 @@ Tab avail_pawn_move(Position *Pini, Echiquier *E){
                             }};
     i = Pini->posy;
     j = Pini->posx;
+
     int (*adverse)[LARGEUR]; // array who receive the pieces' position of the adverse
     int (*mine_piece)[LARGEUR]; // array who reveive the pieces' position of the player
+
     switch(E->t[i][j].c){
         case white : adverse = E->blacks_position;
                      mine_piece = E->whites_position;
