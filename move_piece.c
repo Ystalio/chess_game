@@ -49,6 +49,7 @@ void move_piece(Echiquier *E){
     }
 
 	while(!correct_move) {
+
 		printf("\n%s Indiquer le deplacement %s: ",joueur_color, example_move ? "(sous la forme 'a2a4' par exemple) " : "");
 
 		if(fgets(movement, POSITION_BUFFER_LEN, stdin) == NULL) {
@@ -166,11 +167,11 @@ void move_piece(Echiquier *E){
                     do{
                         printf("\n\nChoisir votre promotion :\n1. Tour.\n2. Cavalier.\n3. Fou.\n4. Dame.\n\nIndiquer le chiffre correspondant à votre choix :");
                         scanf("%d",&promotion);
+                        fflush(stdin);
                         if(promotion != 1 && promotion & 2 && promotion != 3 && promotion != 4){
                             printf("\n\nChoisis 1,2,3 ou 4 ! T'es pas une lumière toi n'est-ce pas ?\n");
                             promotion=0;
                         }
-                        fflush(stdin);
                     }while(promotion==0);
                     switch(promotion){
                         case 1 : E->t[finale.posy][finale.posx]  = f(tour,Pini.c,finale.posx,finale.posy,Pini.m);

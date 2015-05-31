@@ -11,14 +11,40 @@
 void print_binary_chess_table(int (*b)[LARGEUR]);
 void print_game(Echiquier* E);
 void debug(Position2 *init, Echiquier *E);
+void ia_player(Echiquier *E);
+
 int mat(Echiquier *E);
+
 
 int main(int argc, char *argv[])
 {
     Echiquier B = E;
     double end_game;
+    char ia;
     do{//loop to start a new game
-    do{//loop to change player until mat
+        do{
+
+            printf("Voulez-vous jouer contre l'I.A ?\n1. Oui\n2. Non\n");
+            scanf("%c",&ia);
+            flush_stdin();
+            if(ia!='1' && ia!='2'){
+                printf("Veuillez repondre exclusivement par '1' ou '2'.\n");
+            }
+        }while(ia!='1' && ia!='2');
+
+    char color_player;
+    if(ia=='1'){
+        do{
+            color_player=0;
+            printf("Choisissez votre couleur : 1.Blanc 2.Noir :\n");
+            scanf("%c",&color_player);
+            flush_stdin();
+            if(color_player!='1' && color_player!='2'){
+                printf("Veuillez repondre exclusivement par '1' ou '2'.\n");
+            }
+        }while(color_player!='1' && color_player!='2');
+    }
+    do{//loop to change player each round until mat
 
 		term_clear(); // un peu mieux ;)
 
@@ -26,17 +52,23 @@ int main(int argc, char *argv[])
         if(hunt_chess(&B)){
         printf("Vous etes en echec !\n");
         }
-        move_piece(&B);
-       /* printf("\n----------blacks_positions------------\n");
-        print_binary_chess_table(B.blacks_position);
-        printf("\n---------whites_position----------\n");
-        print_binary_chess_table(B.whites_position);
-        printf("\n");
-        printf("a6 : %d, %d, (%d,%d), %d\n", B.t[2][0].t, B.t[2][0].c,B.t[2][0].p.posx,B.t[2][0].p.posy,B.t[2][0].m);
-        getchar();*/
-       //print_game(&B);
+        if(ia=='1'){
+            switch (B.joueur){
+                case JOUEUR_BLANC : if(color_player=='2'){
+                                        ia_player(&B);
+                                    }
 
+                break;
+                case JOUEUR_NOIR : if(color_player=='1'){
+                                        ia_player(&B);
+                                   }
+            }
+        }
+        else{
+            move_piece(&B);
+        }
     }while(!mat(&B));
+
     char *player;
     switch (B.joueur){
         case JOUEUR_BLANC : player = "blanc";
@@ -52,6 +84,7 @@ int main(int argc, char *argv[])
     do{
         printf("Souhaitez-vous refaire une partie ?\n1. Oui\n2. Non\n\n");
         scanf("%lf",&end_game);
+        flush_stdin();
         if(end_game != 1 && end_game != 2){
             printf("taper 1 ou 2.\n");
         }

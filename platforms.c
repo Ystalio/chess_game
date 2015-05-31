@@ -33,9 +33,11 @@ void term_clear(void) {
 	system("cls");
 }
 
-
 void flush_stdin(void) {
-	fflush(stdin);
+	int c;
+	do {
+		c = getchar();
+	} while(c != '\n' && c != EOF);
 }
 
 

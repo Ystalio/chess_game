@@ -124,11 +124,11 @@
 	"Struct_Piece.h"
 	"avail_move.h"
 
-1410012060 source:c:\program files\programmation\chess_game\available_pawn_attacked.c
+1432488075 source:c:\program files\programmation\chess_game\available_pawn_attacked.c
 	"Struct_Piece.h"
 	"avail_move.h"
 
-1431873523 source:c:\program files\programmation\chess_game\available_pawn_move.c
+1432488110 source:c:\program files\programmation\chess_game\available_pawn_move.c
 	"Struct_Piece.h"
 	"avail_move.h"
 
@@ -162,7 +162,7 @@
 	"Struct_Piece.h"
 	"avail_move.h"
 
-1432227725 source:c:\program files\programmation\chess_game\main.c
+1433081707 source:c:\program files\programmation\chess_game\main.c
 	<stdio.h>
 	<stdlib.h>
 	"platforms.h"
@@ -175,7 +175,7 @@
 
 1432202113 c:\program files\programmation\chess_game\initialisation_chess.h
 
-1432224033 source:c:\program files\programmation\chess_game\mat.c
+1432489982 source:c:\program files\programmation\chess_game\mat.c
 	<stdio.h>
 	<stdlib.h>
 	"Struct_Piece.h"
@@ -186,7 +186,7 @@
 	"Struct_Piece.h"
 	"avail_move.h"
 
-1432486839 source:c:\program files\programmation\chess_game\move_piece.c
+1433081813 source:c:\program files\programmation\chess_game\move_piece.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -215,4 +215,11 @@
 	"Struct_Piece.h"
 
 1432486838 source:c:\program files\programmation\chess_game\minmax_algo.c
+
+1433011617 source:c:\program files\programmation\chess_game\ia_player.c
+	"Struct_Piece.h"
+
+1432489390 source:c:\program files\programmation\chess_game\max_algo.c
+
+1432489381 source:c:\program files\programmation\chess_game\min_algo.c
 
