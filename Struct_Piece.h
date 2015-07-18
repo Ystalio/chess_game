@@ -9,6 +9,7 @@ enum piecetype {pion = 0,tour,cavalier,fou,roi,dame};
 enum piececolor{black = 0,white,nothing};
 enum joueur{JOUEUR_NOIR = 0,JOUEUR_BLANC};
 
+
 typedef struct Castle{
     int no_castle;
     int castle;

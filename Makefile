@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-03 -Wall
+CFLAGS=-O0 -Wall -g
 LD=gcc
 LDFLAGS=
 
@@ -18,7 +18,7 @@ $(EXEC): $(OBJ)
 	$(LD) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
-	$(CC) $(CLFAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 
 clean:

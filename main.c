@@ -1,11 +1,8 @@
-#include <stdio.h>
 #include <stdlib.h>
-
-#include "platforms.h"
+#include <stdio.h>
 #include "Struct_Piece.h"
-#include "avail_move.h"
-#include "move_piece.h"
 #include "initialisation_chess.h"
+#include "avail_move.h"
 
 //PETIT COMMENTAIRE : bonne chance pour les tableaux... les x et les y font que de changer... c'est la meeeeerde 8D
 void print_binary_chess_table(int (*b)[LARGEUR]);
@@ -92,4 +89,3 @@ int main(int argc, char *argv[])
     }while(end_game==1);
     return 0;
 }
-
