@@ -5,6 +5,8 @@
 #include "initialisation_chess.h"
 #include "avail_move.h"
 
+#define SIZE_TAB_HASH 1000
+
 //PETIT COMMENTAIRE : bonne chance pour les tableaux... les x et les y font que de changer... c'est la meeeeerde 8D
 //void print_binary_chess_table(int (*b)[LARGEUR]);
 void print_game(Echiquier* E);
@@ -16,10 +18,13 @@ int three_plan_chess(Echiquier *E);
 
 int main(int argc, char *argv[])
 {
-    Echiquier B = E;
-    double end_game;
-    char ia;
+	int i;
+	Echiquier B = E;
+	double end_game;
+	char ia;
     do{//loop to start a new game
+	    Historic_elements *list[SIZE_TAB_HASH];
+	
         do{
 
             printf("Voulez-vous jouer contre l'I.A ?\n1. Oui\n2. Non\n");
