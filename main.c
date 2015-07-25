@@ -10,9 +10,9 @@
 void print_game(Echiquier* E);
 //void debug(Position2 *init, Echiquier *E);
 void ia_player(Echiquier *E);
-
 int mat(Echiquier *E);
-
+int pat(Echiquier *E);
+int three_plan_chess(Echiquier *E);
 
 int main(int argc, char *argv[])
 {
@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
 	term_clear(); // un peu mieux ;)
 
         print_game(&B);
-        if(hunt_chess(&B)){
-        printf("Vous etes en echec !\n");
+ 	if(hunt_chess(&B)){
+      		printf("Vous etes en echec !\n");
         }
         if(ia=='1'){
             switch (B.joueur){
@@ -82,7 +82,9 @@ int main(int argc, char *argv[])
     else if(pat(&B)){
 	    printf("\nEchec et pat ! La partie est nulle.\n");
     }
-    getchar();
+    else if(three_plan_chess){
+	    printf("\nIl y a eu trois etats de jeu identique. La partie est donc nulle.\n");
+    }
     B = E;
     do{
         printf("Souhaitez-vous refaire une partie ?\n1. Oui\n2. Non\n\n");
