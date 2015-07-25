@@ -1,13 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "platforms.h"
 #include "Struct_Piece.h"
 #include "initialisation_chess.h"
 #include "avail_move.h"
 
 //PETIT COMMENTAIRE : bonne chance pour les tableaux... les x et les y font que de changer... c'est la meeeeerde 8D
-void print_binary_chess_table(int (*b)[LARGEUR]);
+//void print_binary_chess_table(int (*b)[LARGEUR]);
 void print_game(Echiquier* E);
-void debug(Position2 *init, Echiquier *E);
+//void debug(Position2 *init, Echiquier *E);
 void ia_player(Echiquier *E);
 
 int mat(Echiquier *E);
@@ -43,7 +44,7 @@ int main(int argc, char *argv[])
     }
     do{//loop to change player each round until mat
 
-		term_clear(); // un peu mieux ;)
+	term_clear(); // un peu mieux ;)
 
         print_game(&B);
         if(hunt_chess(&B)){
@@ -64,7 +65,7 @@ int main(int argc, char *argv[])
         else{
             move_piece(&B);
         }
-    }while(!mat(&B));
+    }while(!mat(&B) && !pat(&B));
 
     char *player;
     switch (B.joueur){
@@ -75,7 +76,12 @@ int main(int argc, char *argv[])
 	term_clear();
 
     print_game(&B);
-    printf("\nJoueur %s, vous etes echec et mat !\n",player);
+    if(mat(&B)){
+    	printf("\nJoueur %s, vous etes echec et mat !\n",player);
+    }
+    else if(pat(&B)){
+	    printf("\nEchec et pat ! La partie est nulle.\n");
+    }
     getchar();
     B = E;
     do{

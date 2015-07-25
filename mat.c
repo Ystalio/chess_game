@@ -95,5 +95,6 @@ int mat(Echiquier *E){
             }
         break;
     }
+    if(!hunt_chess(E)){r=0;}
     return r;
 }
