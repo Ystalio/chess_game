@@ -10,7 +10,7 @@ Echiquier get_chess_after_move(int i, int j, int k, int l, Echiquier* E);
 int test_echec(Tab available_move,Echiquier *E,int i, int j);
 
 
-enum piececolor convert_piececolor_to_joueur(enum piececolor piece_color){
+enum joueur convert_piececolor_to_joueur(enum piececolor piece_color){
 	switch(piece_color){
 		case black : return JOUEUR_NOIR;
 	 	break;

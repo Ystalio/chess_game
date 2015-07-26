@@ -1,6 +1,7 @@
 #ifndef STRUCT_PIECE_H
 #define STRUCT_PIECE_H
 
+#define SIZE_TAB_HASH 1000
 #define LARGEUR     8
 #define FALSE       0
 #define TRUE        1
