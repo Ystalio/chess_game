@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "avail_move.h"
 #include "move_piece.h"
 

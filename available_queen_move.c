@@ -1,4 +1,4 @@
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "avail_move.h"
 
 Tab avail_queen_move(/*int (*adverse)[8], int (*mine_piece)[8],*/ Position *Pini, Echiquier *E){

@@ -1,4 +1,4 @@
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "avail_move.h"
 
 Tab avail_bishop_move(Position *Pini, Echiquier *E){
@@ -19,14 +19,27 @@ Tab avail_bishop_move(Position *Pini, Echiquier *E){
 
     int i = Pini->posy;
     int j = Pini->posx;
-    int (*adverse)[LARGEUR];
-    int (*mine_piece)[LARGEUR];
+    int l,m;
+    int adverse[LARGEUR][LARGEUR];
+    int mine_piece[LARGEUR][LARGEUR];
     switch(E->t[i][j].c){
-        case white : adverse = E->blacks_position;
-                     mine_piece = E->whites_position;
+        case white : for(l=0;l<LARGEUR;l++){
+			     for(m=0;m<LARGEUR;m++){
+				     adverse[l][m] = E->blacks_position[l][m];
+				     mine_piece[l][m] = E->whites_position[l][m];
+			     }
+		     }
+		//	adverse = E->blacks_position;
+//                     mine_piece = E->whites_position;
         break;
-        case black : adverse = E->whites_position;
-                     mine_piece = E->blacks_position;
+        case black : for(l=0;l<LARGEUR;l++){
+			     for(m=0;m<LARGEUR;m++){
+				     adverse[l][m] = E->whites_position[l][m];
+				     mine_piece[l][m] = E->blacks_position[l][m];
+			     }
+		     }
+/*		     adverse = E->whites_position;
+                     mine_piece = E->blacks_position;*/
         break;
         case nothing :
         break;

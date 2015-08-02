@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "struct_piece.h"
 
 int** allocation_2Dtab(int size1, int size2){
     int **p,i;

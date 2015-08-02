@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "avail_move.h"
 #include "move_piece.h"
 #include "platforms.h"
@@ -26,78 +25,30 @@ struct Position g(int a,int b){ //Same, used for record the position of the piec
 int castle_move(Position *finale,Echiquier *E);
 char* strstr(const char* chaine, const char* chaineARechercher);
 
-void move_piece(Echiquier *E){
-    int r=0,end =0; //r necessary to refresh king position if the move is accepted
-    char movement[POSITION_BUFFER_LEN];
+int move_piece(Echiquier *E, Position2 *movement){
+    int r=0,end =0, valid_move = 0; //r necessary to refresh king position if the move is accepted
     Echiquier E_test;
-	int correct_move = 0;
-
-	// used to display an example until a valid move is given
-	static int example_move = 1;
-
     E_test = *E; //allow to work on the chess without change the game
 
-	Position initiale;
-	Position finale;
-
-    char *joueur_color;
-    switch(E->joueur){
-        case JOUEUR_BLANC : joueur_color = "[Blanc]";
-        break;
-        case JOUEUR_NOIR : joueur_color = "[Noir]";
-        break;
-    }
-
-	while(!correct_move) {
-
-		printf("\n%s Indiquer le deplacement %s: ",joueur_color, example_move ? "(sous la forme 'a2a4' par exemple) " : "");
-
-		if(fgets(movement, POSITION_BUFFER_LEN, stdin) == NULL) {
-			// error on stdin or end of input, exit as soon as possible
-			//XXX not very clean
-			exit(1);
-		}
-		flush_stdin();
-
-		// check if movement is well formated!
-		if(isalpha(movement[0]) && isdigit(movement[1])
-				&& isalpha(movement[2]) && isdigit(movement[3]))
-		{
-			initiale.posx = movement[0] - ( islower(movement[0]) ?  'a' : 'A');
-			initiale.posy = 8 - (movement[1] - '0');
-
-			finale.posx = movement[2] - ( islower(movement[2]) ?  'a' : 'A');
-			finale.posy = 8 - (movement[3] - '0');
-
-			correct_move = 1;
-			example_move = 0;
-		}
-		else {
-			printf("Mouvement invalide (ordre origine puis destination, forme attendue : 'a2a4' ou 'C2C3')\n");
-		}
-	}
-
+    Position initiale = g(movement->posx1, movement->posy1) ;
+    Position finale = g(movement->posx2, movement->posy2);
 
     Piece Pini = E->t[initiale.posy][initiale.posx]; //simplify the expression
     Tab temp;
 
     switch (E->joueur){
-        case JOUEUR_BLANC : E_test.blacks_position[finale.posy][finale.posx]=0;
-        break;
-        case JOUEUR_NOIR :  E_test.whites_position[finale.posy][finale.posx]=0;
-        break;
+	    case JOUEUR_BLANC : E_test.blacks_position[finale.posy][finale.posx]=0;
+				break;
+	    case JOUEUR_NOIR :  E_test.whites_position[finale.posy][finale.posx]=0;
+				break;
+	    case NOTHING :
+				break;
     }
     temp = avail_moves[Pini.t](&initiale,E); //temp become a Tab with all the available move for the piece given by Pini.t
-    //Let's see avail_move.h to understand best
-   if(strstr(movement,"e1g1")!= NULL || //this function is necessary to elaborate the castle move
-       strstr(movement,"e1c1")!= NULL ||
-       strstr(movement,"e8g8")!= NULL ||
-       strstr(movement,"e8c8")!= NULL){
-       // printf("No bug for now");//debug
-       // getchar();//debug
-        if(castle_move(&finale,&E_test)){
-            temp.t[finale.posy][finale.posx]=1;
-        }
+    if(castle_test(&initiale, &finale)){ 
+	    if(castle_move(&finale,&E_test)){
+		    temp.t[finale.posy][finale.posx]=1;
+	    }
     }
    // printf("\n");
     //print_binary_chess_table(temp.t);
@@ -112,13 +63,14 @@ void move_piece(Echiquier *E){
                 switch(E->joueur){
                     case JOUEUR_BLANC : E_test.white_king[finale.posy][finale.posx]=1;
                                         E_test.white_king[initiale.posy][initiale.posx]=0;
-                                       // printf("Test_king_move\n");//debug
                                         r=1;
                     break;
                     case JOUEUR_NOIR :  E_test.black_king[finale.posy][finale.posx]=1;
                                         E_test.black_king[initiale.posy][initiale.posx]=0;
                                         r=1;
                     break;
+		    case NOTHING :
+		    break;
                 }
             }
 
@@ -127,11 +79,13 @@ void move_piece(Echiquier *E){
                     switch (E->joueur){
                     case JOUEUR_BLANC : E_test.t[finale.posy+1][finale.posx]=f(pion,nothing,initiale.posx,initiale.posy+1,0);
                                         E_test.blacks_position[finale.posy+1][finale.posx]=0;
-                    break;
-                    case JOUEUR_NOIR :  E_test.t[finale.posy-1][finale.posx]=f(pion,nothing,initiale.posx,initiale.posy-1,0);
-                                        E_test.whites_position[finale.posy-1][finale.posx]=0;
-                    break;
-                    }
+					break;
+		    case JOUEUR_NOIR :  E_test.t[finale.posy-1][finale.posx]=f(pion,nothing,initiale.posx,initiale.posy-1,0);
+					E_test.whites_position[finale.posy-1][finale.posx]=0;
+					break;
+		    case NOTHING :
+					break;
+		    }
                 }
                 else if(E->t[initiale.posy][initiale.posx-1].t == pion && E->t[initiale.posy][initiale.posx-1].m == 1 && finale.posx == initiale.posx-1){
                     switch (E->joueur){
@@ -140,7 +94,9 @@ void move_piece(Echiquier *E){
                     break;
                     case JOUEUR_NOIR :  E_test.t[finale.posy-1][finale.posx]=f(pion,nothing,initiale.posx,initiale.posy-1,0);
                                         E_test.whites_position[finale.posy-1][finale.posx]=0;
-                    break;
+					break;
+		    case NOTHING :
+		    break;
                     }
                 }
 
@@ -155,12 +111,12 @@ void move_piece(Echiquier *E){
                 case JOUEUR_NOIR :   E_test.blacks_position[finale.posy][finale.posx]=1;
                                      E_test.blacks_position[initiale.posy][initiale.posx]=0;
                 break;
+		case NOTHING :
+		break;
             }
 
             if(!hunt_chess(&E_test) && !end){//verification if the move do not place the player in chess, skip this if move already impossible
-               // printf("You're not in chess\n");//debug
-               // printf("joueur actuel E_test : %d\n",E_test.joueur);//debug
-                *E = E_test; //include E_test in E : the piece's movement is accepted
+                *E = E_test; 
                 E->last_move = g(finale.posx,finale.posy);//refresh the last move position
                 if((finale.posy==0 || finale.posy==LARGEUR-1) && E_test.t[finale.posy][finale.posx].t==pion){//Activate the promotion
                     int promotion=0;
@@ -204,7 +160,10 @@ void move_piece(Echiquier *E){
                                         }
                                         E->joueur=JOUEUR_BLANC;
                     break;
-                }
+		    case NOTHING :
+		    break;
+		}
+		valid_move = 1;
             }
             else if(!end){//you pass by there if you're in chess
                 E_test = *E;
@@ -218,24 +177,35 @@ void move_piece(Echiquier *E){
 
             end=1;
         }
-
-//-----------------------------------------Validation move----------------------------------------------------------------------
-
-
-//---------------------end validation move------------------------------------------------------------------------
-
     }
-    else{ //else you go there and the programme explain you why you can't (you're trying to move a adverse piece)
-        char *p; //Pourquoi ça marche que si c'est un pointeur ?. . .
-        switch (E->joueur){
-            case JOUEUR_BLANC : p = "blanches";
-            break;
-            case JOUEUR_NOIR  : p = "noires";
-            break;
-        }
+    else{ //else you go there and the programme explain you why you can't (you're trying to move an adverse piece)
+        char *p; 
+	switch (E->joueur){
+		case JOUEUR_BLANC : p = "blanches";
+				    break;
+		case JOUEUR_NOIR  : p = "noires";
+				    break;
+		case NOTHING :
+				    break;
+	}
         printf("Vous ne pouvez deplacer que les pieces %s\n", p);
         getchar();
     }
-    //Position2 R = {initiale.posx,initiale.posy,finale.posx,finale.posy,temp}; //instruction for the debug
-   // return R;
+    return valid_move;
+}
+
+int castle_test(Position *initiale, Position *finale){
+	if(initiale->posx == 4){
+		if(initiale->posy == 7 && finale->posy == 7){
+			if(finale->posx == 6 || finale->posx == 2){
+				return 1;
+			}
+		}
+		else if(initiale->posy == 0 && finale->posy == 0){
+			if(finale->posx == 6 || finale->posx == 2){
+				return 1;
+			}
+		}
+	}
+	return 0;
 }

@@ -1,4 +1,4 @@
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 
 int verification_player(Echiquier *E, Position *init){
     int r;

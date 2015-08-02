@@ -1,7 +1,7 @@
 #ifndef AVAIL_MOVE_H
 #define AVAIL_MOVE_H
 
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 
 typedef Tab (*avail_move_func_t)( Position *Pini, Echiquier *E);
 

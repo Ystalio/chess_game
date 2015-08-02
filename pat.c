@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "avail_move.h"
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "move_piece.h"
 
 int hunt_chess(Echiquier *E);
@@ -13,11 +13,8 @@ int test_echec(Tab available_move,Echiquier *E,int i, int j);
 enum joueur convert_piececolor_to_joueur(enum piececolor piece_color){
 	switch(piece_color){
 		case black : return JOUEUR_NOIR;
-	 	break;
 		case white : return JOUEUR_BLANC;
-		break;
-		default: return JOUEUR_BLANC;fprintf(stderr,"converting enum piececolor to joueur : in Struct_Piece.h");
-		break;
+		default : return NOTHING;
 	}
 }
 

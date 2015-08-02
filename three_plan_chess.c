@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "allocation_mem.h"
 
 

@@ -1,9 +1,10 @@
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "avail_move.h"
+#include <stdio.h>
 
 Tab avail_pawn_move(Position *Pini, Echiquier *E){
 
-    int i,j;
+    int i,j,k,l;
 
     Tab avail_move = {.t =  {{0,0,0,0,0,0,0,0},
                              {0,0,0,0,0,0,0,0},
@@ -17,18 +18,30 @@ Tab avail_pawn_move(Position *Pini, Echiquier *E){
     i = Pini->posy;
     j = Pini->posx;
 
-    int (*adverse)[LARGEUR]; // array who receive the pieces' position of the adverse
-    int (*mine_piece)[LARGEUR]; // array who reveive the pieces' position of the player
+    int adverse[LARGEUR][LARGEUR]; // array who receive the pieces' position of the adverse
+    int mine_piece[LARGEUR][LARGEUR]; // array who reveive the pieces' position of the player
 
     switch(E->t[i][j].c){
-        case white : adverse = E->blacks_position;
-                     mine_piece = E->whites_position;
-        break;
-        case black : adverse = E->whites_position;
-                     mine_piece = E->blacks_position;
-        break;
-        case nothing :
-        break;
+	    case white : for(k=0;k<LARGEUR;k++){
+				 for(l=0;l<LARGEUR;l++){
+					 adverse[k][l] = E->blacks_position[k][l];
+					 mine_piece[k][l] = E->whites_position[k][l];
+				 }
+			 }
+			 //adverse = E->blacks_position;
+			 //mine_piece = E->whites_position;
+			 break;
+	    case black : for(k=0;k<LARGEUR;k++){
+				 for(l=0;l<LARGEUR;l++){
+					 adverse[k][l] = E->whites_position[k][l];
+					 mine_piece[k][l] = E->blacks_position[k][l];
+				 }
+			 }
+			 //adverse = E->whites_position;
+			 //mine_piece = E->blacks_position;
+			 break;
+	    case nothing :
+			 break;
     }
 
     switch(E->t[Pini->posy][Pini->posx].c){
@@ -47,10 +60,10 @@ Tab avail_pawn_move(Position *Pini, Echiquier *E){
                             avail_move.t[i-2][j]=1; //move forward by two square
 
                         }
-                        if(E->last_move.posx==j+1 && E->last_move.posy==i && E->t[i][j+1].m==1 && E->t[i][j+1].t==black){
+                        if(E->last_move.posx==j+1 && E->last_move.posy==i && E->t[i][j+1].m==1 && E->t[i][j+1].t==/*black*/pion){
                             avail_move.t[i-1][j+1]=1;
                         }
-                        if(E->last_move.posx==j-1 && E->last_move.posy==i && E->t[i][j-1].m==1 && E->t[i][j-1].t==black){
+                        if(E->last_move.posx==j-1 && E->last_move.posy==i && E->t[i][j-1].m==1 && E->t[i][j-1].t==/*black*/pion){
                             avail_move.t[i-1][j-1]=1;
                         }
         break;

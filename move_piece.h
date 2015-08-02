@@ -12,8 +12,8 @@ typedef struct Position2{
 struct Position g(int a,int b);
 struct Piece f(int a,int b,int c,int d,int e);
 int verification_player(Echiquier *E, Position *init);
-void move_piece(Echiquier *E);
+int move_piece(Echiquier *E, Position2 *movement);
 int hunt_chess(Echiquier *E);
 void print_game(Echiquier* E);
-
+int castle_test(Position *initiale, Position *finale);
 #endif // MOVE_PIECE_H_INCLUDED

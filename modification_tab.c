@@ -1,4 +1,4 @@
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "avail_move.h"
 /*
 This function allow to refresh the bitboards, when the movement is done.

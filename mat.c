@@ -2,7 +2,7 @@
 #include <stdlib.h>
 //#include <windows.h>
 
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "avail_move.h"
 #include "move_piece.h"
 
@@ -94,6 +94,8 @@ int mat(Echiquier *E){
                 }
             }
         break;
+	case NOTHING :
+	break;
     }
     if(!hunt_chess(E)){r=0;}
     return r;

@@ -1,81 +1,91 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "platforms.h"
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "allocation_mem.h"
 #include "initialisation_chess.h"
 #include "avail_move.h"
 #include "move_piece.h"
+#include "choice_player.h"
 
+#define JOUEUR_BUFFER_LEN 		2
+#define SIZE_TAB_HASH			1000
 
-//PETIT COMMENTAIRE : bonne chance pour les tableaux... les x et les y font que de changer... c'est la meeeeerde 8D
-//void print_binary_chess_table(int (*b)[LARGEUR]);
 void print_game(Echiquier* E);
-//void debug(Position2 *init, Echiquier *E);
-void ia_player(Echiquier *E);
 int mat(Echiquier *E);
 int pat(Echiquier *E);
 int three_plan_chess(Historic_elements **list,Echiquier *E);
 
+
 int main(int argc, char *argv[])
 {
+	Position2 mvt_j1, mvt_j2;
 	Echiquier B = E;
 	double end_game;
-	char ia;
+	enum joueur_type joueur1, joueur2;
 	do{//loop to start a new game
+		int test_three_plan_chess;
+		int i = 0;
 		Historic_elements *list[SIZE_TAB_HASH]={NULL};
 		do{
-
-			printf("Voulez-vous jouer contre l'I.A ?\n1. Oui\n2. Non\n");
-			scanf("%c",&ia);
+			char joueur1_temp[JOUEUR_BUFFER_LEN], joueur2_temp[JOUEUR_BUFFER_LEN];
+			printf("\nChoisissez qui est le joueur blanc parmi ces choix :\n");
+			printf("1. joueur\n2. ia\n");
+			if(fgets(joueur1_temp,sizeof(joueur1_temp),stdin)==NULL){
+				fprintf(stderr,"error fgets");
+				exit(1);
+			}
 			flush_stdin();
-			if(ia!='1' && ia!='2'){
+			printf("\nChoisissez qui est le joueur noir parmi ces choix :\n");
+			printf("1. joueur\n2. ia\n");
+			if(fgets(joueur2_temp,sizeof(joueur2_temp),stdin)==NULL){
+				fprintf(stderr,"error fgets");
+				exit(1);
+			}
+			flush_stdin();
+
+			joueur1 = strtol(joueur1_temp,NULL,10);
+			joueur2 = strtol(joueur2_temp,NULL,10);
+
+			if((joueur1 != 1 && joueur1 != 2) || (joueur2 != 1 && joueur2 != 2)){
 				printf("Veuillez repondre exclusivement par '1' ou '2'.\n");
 			}
-		}while(ia!='1' && ia!='2');
+		}while((joueur1 != 1 && joueur1 != 2) || (joueur2 != 1 && joueur2 != 2));
 
-		char color_player;
-		if(ia=='1'){
-			do{
-				color_player=0;
-				printf("Choisissez votre couleur : 1.Blanc 2.Noir :\n");
-				scanf("%c",&color_player);
-				flush_stdin();
-				if(color_player!='1' && color_player!='2'){
-					printf("Veuillez repondre exclusivement par '1' ou '2'.\n");
-				}
-			}while(color_player!='1' && color_player!='2');
-		}
 		do{//loop to change player each round until mat
-
+			int right_move = 0;
 			term_clear(); // un peu mieux ;)
 
 			print_game(&B);
 			if(hunt_chess(&B)){
 				printf("Vous etes en echec !\n");
 			}
-			if(ia=='1'){
-				switch (B.joueur){
-					case JOUEUR_BLANC : if(color_player=='2'){
-								    ia_player(&B);
-							    }
-
-							    break;
-					case JOUEUR_NOIR : if(color_player=='1'){
-								   ia_player(&B);
-							   }
-				}
+			switch(B.joueur){
+				case JOUEUR_BLANC : mvt_j1 = get_mvt[joueur1](list, &B); 
+						    right_move =  move_piece(&B,&mvt_j1);
+						    break;
+				case JOUEUR_NOIR : mvt_j2 = get_mvt[joueur2](list, &B); 
+						   right_move = move_piece(&B,&mvt_j2);
+						   break;
+				case NOTHING :
+						   break;
+			}
+			if(right_move){
+				test_three_plan_chess = three_plan_chess(list, &B);
 			}
 			else{
-				move_piece(&B);
+				test_three_plan_chess = 0;
 			}
-		}while(!mat(&B) && !pat(&B) && !three_plan_chess(list,&B));
+		}while(!mat(&B) && !pat(&B) && !test_three_plan_chess);
 
 		char *player;
 		switch (B.joueur){
 			case JOUEUR_BLANC : player = "blanc";
 					    break;
 			case JOUEUR_NOIR : player = "noir";
+					   break;
+			case NOTHING :
+					   break;
 		}
 		term_clear();
 
@@ -86,7 +96,7 @@ int main(int argc, char *argv[])
 		else if(pat(&B)){
 			printf("\nEchec et pat ! La partie est nulle.\n");
 		}
-		else if(three_plan_chess(list,&B)){
+		else if(test_three_plan_chess){
 			printf("\nIl y a eu trois etats de jeu identique. La partie est donc nulle.\n");
 		}
 		B = E;
@@ -98,6 +108,14 @@ int main(int argc, char *argv[])
 				printf("taper 1 ou 2.\n");
 			}
 		}while(end_game != 1 && end_game != 2);
+		for(i=0;i<SIZE_TAB_HASH;i++){
+			Historic temp = list[i];
+			while(temp != NULL){
+				Historic swap = temp->next;
+				free(temp);	
+				temp = swap;
+			}
+		}
 	}while(end_game==1);
 	return 0;
 }

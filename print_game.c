@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "platforms.h"
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 
 void print_game(Echiquier* E){ //fonction qui affiche l'échiquier en console
     static const char* code = "ptcfrd";

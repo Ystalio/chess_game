@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Struct_Piece.h"
+#include "struct_piece.h"
 #include "avail_move.h"
 
 int hunt_chess(Echiquier *E){//if the position on the E chess is a chess position, then hunt_chess return 1
@@ -55,7 +55,6 @@ int hunt_chess(Echiquier *E){//if the position on the E chess is a chess positio
 
                 switch(E->joueur){
                     case JOUEUR_BLANC : if(adverse_position.t[i][j] && E->white_king[i][j]){
-
                                         r=1;
                                         }
                     break;
@@ -63,6 +62,8 @@ int hunt_chess(Echiquier *E){//if the position on the E chess is a chess positio
                                         r=1;
                                         }
                     break;
+		    case NOTHING :
+		    break;
                 }
 
                 if(r==1){break;}
