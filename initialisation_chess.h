@@ -54,40 +54,8 @@ Echiquier E = {
                         {0,0,0,0,0,0,0,0}},
   };
 
-struct All_pieces{
-/*--------black pieces---------*/
-	Position bp1	= {0,1};
-	Position bp2	= {1,1};
-	Position bp3	= {2,1};
-	Position bp4	= {3,1};
-	Position bp5	= {4,1};
-	Position bp6	= {5,1};
-	Position bp7	= {6,1};
-	Position bp8	= {7,1};
-	Position bt1	= {0,0};
-	Position bt2	= {7,0};
-	Position bc1	= {1,0};
-	Position bc2	= {6,0};
-	Position bf1	= {2,0};
-	Position bf2	= {5,0};
-	Position bd	= {3,0};
-	Position br	= {4,0};
-/*-------white  pieces---------*/
-	Position wp1	= {0,6};
-	Position wp2	= {1,6};
-	Position wp3	= {2,6};
-	Position wp4	= {3,6};
-	Position wp5	= {4,6};
-	Position wp6	= {5,6};
-	Position wp7	= {6,6};
-	Position wp8	= {7,6};
-	Position wt1	= {0,7};
-	Position wt2	= {7,7};
-	Position wc1	= {1,7};
-	Position wc2	= {6,7};
-	Position wf1	= {2,7};
-	Position wf2	= {5,7};
-	Position wd	= {3,7};
-	Position wr	= {4,7};
-}All_pieces;
+All_pieces all_pieces = {{0,1},{1,1},{2,1},{3,1},{4,1},{5,1},{6,1},{7,1},
+	{0,0},{7,0},{1,0},{6,0},{2,0},{5,0},{3,0},{4,0},
+	{0,6},{1,6},{2,6},{3,6},{4,6},{5,6},{6,6},{7,6},
+	{0,7},{7,7},{1,7},{6,7},{2,7},{5,7},{3,7},{4,7}};
 #endif // INITIALISATION_CHESS_H

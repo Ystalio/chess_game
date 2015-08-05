@@ -2,6 +2,7 @@
 #include "avail_move.h"
 
 int check_pieces_position(int i, int j, enum piececolor color, Echiquier *chess);
+
 void avail_bishop_move(Position *Pini, Echiquier *E, int *temp){
 
     int k;

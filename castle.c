@@ -20,33 +20,24 @@ Castle avail_castle_move(Position *Pini, Echiquier *E){
     if(E->t[j][i].m==0){
             if(E->t[0][i].m==0){
                 for(k=1;k<j;k++){
-                    printf("\n%d\n",k);//debug
                     if(E->t[i][k].c != nothing){
-                        printf("\nok1\n");//debug
-                        printf("%d,%d",i,k);//debug
-
                         castle.big_castle = 0;
                     }
                 }
                 if(castle.big_castle){
                     if(no_chess_castle(Pini,E)){
-                        printf("\nok2\n");
                         castle.no_castle=1;
                     }
                 }
             }
             if(E->t[7][i].m==0){
                 for(k=LARGEUR-1;k>j;k--){
-                    printf("\n%d\n",k);//debug
                     if(E->t[i][k].c != nothing){
-                        printf("\nok3\n");//debug
-                        printf("%d,%d",i,k);//debug
                         castle.castle = 0;
                     }
                 }
                 if(castle.castle){
                     if(no_chess_castle(Pini,E)){
-                        printf("\nok4\n");
                         castle.no_castle = 1;
                     }
                 }

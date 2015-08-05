@@ -52,9 +52,8 @@ int move_piece(Echiquier *E, Position2 *movement){
 		}
 	}
 
-	if(verification_player(E,&initiale)){//let's see verification_player.c
+	if(verification_player(E,&initiale)){
 		// if the piece asked to be moved is in the right color, here you go
-		Piece Pini = E->t[initiale.posy][initiale.posx]; //simplify the expression
 		if(temp[finale.posy][finale.posx]){//if the move asked by the player is available,you're here
 
 			if(Pini.t==roi){//This condition refresh the king array of the E_test

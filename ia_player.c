@@ -28,6 +28,9 @@ unsigned int h_funct(void *chained_list, int size_chaine);
 Passant en_passant_test(Echiquier *E);
 int get_nb_occurrences(EchiquierSave *actual_plan, Historic_elements *list);
 int rand_val(int value, int val_minmax);
+void mdfy_pieces_position(int i, int j, enum joueur player, int value, Echiquier *chess);
+void mdfy_king_position(int i, int j, enum joueur player, int value, Echiquier *chess);
+
 
 
 Position2 ia_player(Historic_elements **list, Echiquier *E){
@@ -81,34 +84,29 @@ Position2 get_position(Historic_elements **list, Echiquier *E){
 
 Echiquier simulate_move(Position *Pini, Position *Pfin, Echiquier *E){
 
+	enum joueur player = E->joueur;
+	enum joueur player_adv;
+	enum piececolor color;
+	if(player == JOUEUR_BLANC){
+		player_adv = JOUEUR_NOIR;
+		color = white;
+	}
+	else{
+		player_adv = JOUEUR_BLANC;
+		color = black;
+	}
 	Echiquier simulate_move = *E;
 	simulate_move.t[Pini->posy][Pini->posx]=f(pion,nothing,Pini->posx,Pini->posy,0);
-	switch(E->joueur){
-		case JOUEUR_NOIR : simulate_move.joueur = JOUEUR_BLANC;
-				   if(E->t[Pini->posy][Pini->posx].t == roi){
-					   simulate_move.black_king[Pini->posy][Pini->posx]=0;
-					   simulate_move.black_king[Pfin->posy][Pfin->posx]=1;
-				   }
-				   simulate_move.t[Pfin->posy][Pfin->posx] 
-					   = f(E->t[Pini->posy][Pini->posx].t,black,Pfin->posx,Pfin->posy,E->t[Pini->posy][Pini->posx].m +1);
-				   simulate_move.blacks_position[Pini->posy][Pini->posx] = 0;
-				   simulate_move.blacks_position[Pfin->posy][Pfin->posx] = 1;
-				   simulate_move.whites_position[Pfin->posy][Pfin->posx] = 0;
-				   break;
-		case JOUEUR_BLANC : simulate_move.joueur = JOUEUR_NOIR;
-				   if(E->t[Pini->posy][Pini->posx].t == roi){
-					   simulate_move.white_king[Pini->posy][Pini->posx] = 0;
-					   simulate_move.white_king[Pfin->posy][Pfin->posx] = 1;
-				   }
-				   simulate_move.t[Pfin->posy][Pfin->posx] 
-					   = f(E->t[Pini->posy][Pini->posx].t,white,Pfin->posx,Pfin->posy,E->t[Pini->posy][Pini->posx].m +1);
-				   simulate_move.whites_position[Pini->posy][Pini->posx] = 0;
-				   simulate_move.whites_position[Pfin->posy][Pfin->posx] = 1;
-				   simulate_move.blacks_position[Pfin->posy][Pfin->posx] = 0;
-				   break;
-		case NOTHING : fprintf(stderr, "error : enum joueur take NOTHING value");
-			       break;
+ 	simulate_move.joueur = player;
+	if(E->t[Pini->posy][Pini->posx].t == roi){
+		mdfy_king_position(Pini->posy, Pini->posx, player, 0, &simulate_move);
+		mdfy_king_position(Pfin->posy, Pfin->posx, player, 1, &simulate_move);
 	}
+	simulate_move.t[Pfin->posy][Pfin->posx] 
+		= f(E->t[Pini->posy][Pini->posx].t,color,Pfin->posx,Pfin->posy,E->t[Pini->posy][Pini->posx].m +1);
+	mdfy_pieces_position(Pini->posy, Pini->posx, player, 0, &simulate_move);
+	mdfy_pieces_position(Pfin->posy, Pfin->posx, player, 1, &simulate_move);
+	mdfy_pieces_position(Pfin->posy, Pfin->posx, player_adv, 0, &simulate_move);
 	simulate_move.last_move = g(Pfin->posx,Pfin->posy);
 	return simulate_move;
 }

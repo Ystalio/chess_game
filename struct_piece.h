@@ -49,6 +49,42 @@ typedef struct Echiquier
     int blacks_position[LARGEUR][LARGEUR];
 }Echiquier;
 
+typedef struct All_pieces{
+/*--------black pieces---------*/
+	Position bp1;
+	Position bp2;	
+	Position bp3;
+	Position bp4;
+	Position bp5;
+	Position bp6;
+	Position bp7;
+	Position bp8;
+	Position bt1;
+	Position bt2;
+	Position bc1;
+	Position bc2;
+	Position bf1;
+	Position bf2;
+	Position bd;
+	Position br;
+/*-------white  pieces---------*/
+	Position wp1;
+	Position wp2;
+	Position wp3;
+	Position wp4;
+	Position wp5;
+	Position wp6;
+	Position wp7;
+	Position wp8;
+	Position wt1;
+	Position wt2;
+	Position wc1;
+	Position wc2;
+	Position wf1;
+	Position wf2;
+	Position wd;
+	Position wr;
+}All_pieces;
 
 void modification_tab(Position Pini, Position Pend, Tab *r);//save piece movement
 

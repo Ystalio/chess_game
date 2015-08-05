@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 #include "struct_piece.h"
 #include "avail_move.h"
 
@@ -8,15 +8,8 @@ enum joueur convert_piececolor_to_joueur(enum piececolor piececolor);
 
 int hunt_chess(Echiquier *E){//if the position on the E chess is a chess position for the actual player, then hunt_chess return 1
 	int i,j,r=0;
-	int adverse_position[LARGEUR][LARGEUR] =    {{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0}
-	};
+	int adverse_position[LARGEUR][LARGEUR];
+	memset(*adverse_position, 0, sizeof(adverse_position));
 	Position initiale;
 	int *ptr_adverse_position;
 	ptr_adverse_position = (int *)adverse_position;
