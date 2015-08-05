@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-O0 -Wall -g
+CFLAGS=-O3 -Wall -g
 LD=gcc
 LDFLAGS=
 

@@ -2,95 +2,90 @@
 #include "avail_move.h"
 #include <stdio.h>
 
-Tab avail_pawn_move(Position *Pini, Echiquier *E){
+int check_pieces_position(int i, int j, enum piececolor, Echiquier *chess);
 
-    int i,j,k,l;
+void avail_pawn_move(Position *Pini, Echiquier *E, int *temp){
 
-    Tab avail_move = {.t =  {{0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0}
-                            }};
-    i = Pini->posy;
-    j = Pini->posx;
+	int i,j;
 
-    int adverse[LARGEUR][LARGEUR]; // array who receive the pieces' position of the adverse
-    int mine_piece[LARGEUR][LARGEUR]; // array who reveive the pieces' position of the player
+	i = Pini->posy;
+	j = Pini->posx;
 
-    switch(E->t[i][j].c){
-	    case white : for(k=0;k<LARGEUR;k++){
-				 for(l=0;l<LARGEUR;l++){
-					 adverse[k][l] = E->blacks_position[k][l];
-					 mine_piece[k][l] = E->whites_position[k][l];
-				 }
-			 }
-			 //adverse = E->blacks_position;
-			 //mine_piece = E->whites_position;
-			 break;
-	    case black : for(k=0;k<LARGEUR;k++){
-				 for(l=0;l<LARGEUR;l++){
-					 adverse[k][l] = E->whites_position[k][l];
-					 mine_piece[k][l] = E->blacks_position[k][l];
-				 }
-			 }
-			 //adverse = E->whites_position;
-			 //mine_piece = E->blacks_position;
-			 break;
-	    case nothing :
-			 break;
-    }
+	enum piececolor color = E->t[i][j].c;
+	enum piececolor color_adv;
+	if(color == white){
+		color_adv = black;
+	}
+	else{
+		color_adv = white;
+	}
 
-    switch(E->t[Pini->posy][Pini->posx].c){
+	switch(color){
 
-        case white :
-                        if(i-1 >= 0){ //verification if inside of array
-                            if(j-1 >= 0){
-                                if(adverse[i-1][j-1]==1){avail_move.t[i-1][j-1]=1;} //capture forward on its left
-                            }
-                            if(adverse[i-1][j]==0 && mine_piece[i-1][j]== 0){avail_move.t[i-1][j]=1;} //move forward by one square
-                        }
-                        if(i-1 >=0 && j+1 < LARGEUR){ //verification if inside of array
-                            if(adverse[i-1][j+1]==1){avail_move.t[i-1][j+1]=1;} //capture forward on its right
-                        }
-                        if(E->t[Pini->posy][Pini->posx].m == 0 && adverse[i-1][j]==0 && adverse[i-2][j]==0 && mine_piece[i-1][j]== 0 && mine_piece[i-2][j]== 0){
-                            avail_move.t[i-2][j]=1; //move forward by two square
+		case white :
+			if(i-1 >= 0){ //verification if inside of array
+				if(j-1 >= 0){
+					if(check_pieces_position(i-1, j-1, color_adv, E) == 1){
+						temp[(i-1)*LARGEUR + j-1]=1;//capture forward on its left
+					} 
+				}
+				if(check_pieces_position(i-1, j, color_adv, E) == 0 && 
+						check_pieces_position(i-1, j, color, E) == 0){
+					temp[(i-1)*LARGEUR + j]=1;//move forward by one square
+				} 
+			}
+			if(i-1 >=0 && j+1 < LARGEUR){ //verification if inside of array
+				if(check_pieces_position(i-1, j+1, color_adv, E) == 1){
+					temp[(i-1)*LARGEUR + j+1]=1; //capture forward on its right
+				}
+			}
+			if(E->t[Pini->posy][Pini->posx].m == 0 && 
+					check_pieces_position(i-1, j, color_adv, E) == 0 && 
+					check_pieces_position(i-2, j, color_adv, E) == 0 && 
+					check_pieces_position(i-1, j, color, E) == 0 && 
+					check_pieces_position(i-2, j, color, E) == 0){
+				temp[(i-2)*LARGEUR + j]=1; //move forward by two square
 
-                        }
-                        if(E->last_move.posx==j+1 && E->last_move.posy==i && E->t[i][j+1].m==1 && E->t[i][j+1].t==/*black*/pion){
-                            avail_move.t[i-1][j+1]=1;
-                        }
-                        if(E->last_move.posx==j-1 && E->last_move.posy==i && E->t[i][j-1].m==1 && E->t[i][j-1].t==/*black*/pion){
-                            avail_move.t[i-1][j-1]=1;
-                        }
-        break;
+			}
+			if(E->last_move.posx==j+1 && E->last_move.posy==i && E->t[i][j+1].m==1 && E->t[i][j+1].t==pion){
+				temp[(i-1)*LARGEUR + j+1]=1;
+			}
+			if(E->last_move.posx==j-1 && E->last_move.posy==i && E->t[i][j-1].m==1 && E->t[i][j-1].t==pion){
+				temp[(i-1)*LARGEUR + j-1]=1;
+			}
+			break;
 
-        case black :
-                        if(i+1<LARGEUR){ //verification if inside of array
-                            if(adverse[i+1][j]==0 && mine_piece[i+1][j]==0){avail_move.t[i+1][j]=1;} //move forward by one square
-                            if(j-1>=0){
-                                if(adverse[i+1][j-1]==1){avail_move.t[i+1][j-1]=1;} //capture forward on its left
-                            }
-                        }
-                        if(i+1<LARGEUR && j+1<LARGEUR){ //verification if inside of array
-                            if(adverse[i+1][j+1]==1){avail_move.t[i+1][j+1]=1;} //capture forward on its right
-                        }
-                        if(E->t[Pini->posy][Pini->posx].m==0 && adverse[i+1][j]==0 && adverse[i+2][j]==0 && mine_piece[i+1][j]==0 && mine_piece[i+2][j]==0){
-                            avail_move.t[i+2][j]=1; //move forward by two square
-                        }
-                        if(E->last_move.posx==j+1 && E->last_move.posy==i && E->t[i][j+1].m==1 /*&& E->t[i][j+1].t== white*/){//if black instead of black it works...
-                            avail_move.t[i+1][j+1]=1;
-                        }
-                        if(E->last_move.posx==j-1 && E->last_move.posy==i && E->t[i][j-1].m==1 /*&& E->t[i][j-1].t== white*/){//if black instead of black it works...
-                            avail_move.t[i+1][j-1]=1;
-                        }
-        break;
-        case nothing :
-        break;
-    }
-    return avail_move;
+		case black :
+			if(i+1<LARGEUR){ //verification if inside of array
+				if(check_pieces_position(i+1, j, color_adv, E) == 0 && check_pieces_position(i+1, j, color, E) == 0){
+					temp[(i+1)*LARGEUR +j]=1;//move forward by one square
+				} 
+				if(j-1>=0){
+					if(check_pieces_position(i+1, j-1, color_adv, E) == 1){
+						temp[(i+1)*LARGEUR + j-1]=1;//capture forward on its left
+					} 
+				}
+			}
+			if(i+1<LARGEUR && j+1<LARGEUR){ //verification if inside of array
+				if(check_pieces_position(i+1, j+1, color_adv, E) == 1){
+					temp[(i+1)*LARGEUR + j+1]=1; //capture forward on its right
+				}
+			}
+			if(E->t[Pini->posy][Pini->posx].m==0 && 
+					check_pieces_position(i+1, j, color_adv, E) == 0 && 
+					check_pieces_position(i+2, j, color_adv, E) == 0 && 
+					check_pieces_position(i+1, j, color, E) == 0 && 
+					check_pieces_position(i+2, j, color, E) == 0){
+				temp[(i+2)*LARGEUR + j]=1; //move forward by two square
+			}
+			if(E->last_move.posx==j+1 && E->last_move.posy==i && E->t[i][j+1].m==1){
+				temp[(i+1)*LARGEUR + j+1]=1;
+			}
+			if(E->last_move.posx==j-1 && E->last_move.posy==i && E->t[i][j-1].m==1){
+				temp[(i+1)*LARGEUR + j-1]=1;
+			}
+			break;
+		case nothing :
+			break;
+	}
 }
-

@@ -1,76 +1,49 @@
 #include "struct_piece.h"
 #include "avail_move.h"
 
-Tab avail_pawn_attacked(Position *Pini, Echiquier *E){
+int check_pieces_position(int i, int  j, enum piececolor, Echiquier *chess);
 
-    int i,j,k,l;
+void avail_pawn_attacked(Position *Pini, Echiquier *E, int *temp){
 
-    Tab avail_move = {.t =  {{0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0},
-                             {0,0,0,0,0,0,0,0}
-                            }};
-    i = Pini->posy;
-    j = Pini->posx;
+	int i,j;
 
-    int mine_piece[LARGEUR][LARGEUR];
+	i = Pini->posy;
+	j = Pini->posx;
 
-    switch(E->t[i][j].c){
-	    case white : for(k=0;k<LARGEUR;k++){
-				 for(l=0;l<LARGEUR;l++){
-					 mine_piece[k][l] = E->whites_position[k][l];
-				 }
-			 }
-			 break;
-	    case black : for(k=0;k<LARGEUR;k++){
-			     for(l=0;l<LARGEUR;l++){
-				     mine_piece[k][l] = E->blacks_position[k][l];
-			     }
-		     }
-			 break;
-	    case nothing :
-			 break;
-    }
+	enum piececolor color = E->t[i][j].c;
 
-    switch(E->t[Pini->posy][Pini->posx].c){
+	switch(color){
 
-        case white :
-                        if(i-1 >= 0){ //verification if inside of array
-                            if(j-1 >= 0){
-                                if(mine_piece[i-1][j-1]==0){
-                                    avail_move.t[i-1][j-1]=1; //capture forward on its left
-                                }
-                            }
-                        }
-                        if(i-1 >=0 && j+1 < LARGEUR){ //verification if inside of array
-                            if(mine_piece[i-1][j+1]==0){
-                                avail_move.t[i-1][j+1]=1; //capture forward on its right
-                            }
-                        }
-        break;
+		case white :
+			if(i-1 >= 0){ //verification if inside of array
+				if(j-1 >= 0){
+					if(check_pieces_position(i-1, j-1, color, E) == 0){
+						temp[(i-1)*LARGEUR + j-1]=1; //capture forward on its left
+					}
+				}
+			}
+			if(i-1 >=0 && j+1 < LARGEUR){ //verification if inside of array
+				if(check_pieces_position(i-1, j+1, color, E) == 0){
+					temp[(i-1)*LARGEUR + j+1]=1; //capture forward on its right
+				}
+			}
+			break;
 
-        case black :
-                        if(i+1<LARGEUR){ //verification if inside of array
-                            if(j-1>=0){
-                                if(mine_piece[i+1][j-1]==0){
-                                    avail_move.t[i+1][j-1]=1; //capture forward on its left
-                                }
-                            }
-                        }
-                        if(i+1<LARGEUR && j+1<LARGEUR){ //verification if inside of array
-                            if(mine_piece[i+1][j+1]==0){
-                                avail_move.t[i+1][j+1]=1; //capture forward on its right
-                            }
-                        }
-        break;
-        case nothing :
-        break;
-    }
-
-    return avail_move;
+		case black :
+			if(i+1<LARGEUR){ //verification if inside of array
+				if(j-1>=0){
+					if(check_pieces_position(i+1, j-1, color, E) == 0){
+						temp[(i+1)*LARGEUR + j-1]=1; //capture forward on its left
+					}
+				}
+			}
+			if(i+1<LARGEUR && j+1<LARGEUR){ //verification if inside of array
+				if(check_pieces_position(i+1, j+1, color, E) == 0){
+					temp[(i+1)*LARGEUR + j+1]=1; //capture forward on its right
+				}
+			}
+			break;
+		case nothing :
+			break;
+	}
 }
-

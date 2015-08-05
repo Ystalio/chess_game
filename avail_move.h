@@ -3,17 +3,17 @@
 
 #include "struct_piece.h"
 
-typedef Tab (*avail_move_func_t)( Position *Pini, Echiquier *E);
+typedef void (*avail_move_func_t)(Position *Pini, Echiquier *E, int *temp);
 
 
 
-Tab avail_pawn_move(Position *Pini, Echiquier *E);
-Tab avail_pawn_attacked(Position *Pini, Echiquier *E);
-Tab avail_bishop_move(Position *Pini, Echiquier *E);
-Tab avail_knight_move(Position *Pini, Echiquier *E);
-Tab avail_tower_move(Position *Pini, Echiquier *E);
-Tab avail_queen_move(Position *Pini, Echiquier *E);
-Tab avail_king_move(Position *Pini, Echiquier *E);
+void avail_pawn_move(Position *Pini, Echiquier *E, int *temp);
+void avail_pawn_attacked(Position *Pini, Echiquier *E, int *temp);
+void avail_bishop_move(Position *Pini, Echiquier *E, int *temp);
+void avail_knight_move(Position *Pini, Echiquier *E, int *temp);
+void avail_tower_move(Position *Pini, Echiquier *E, int *temp);
+void avail_queen_move(Position *Pini, Echiquier *E, int *temp);
+void avail_king_move(Position *Pini, Echiquier *E, int *temp);
 
 
 const static avail_move_func_t avail_moves[] = {

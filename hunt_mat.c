@@ -4,70 +4,63 @@
 #include "struct_piece.h"
 #include "avail_move.h"
 
-int hunt_chess(Echiquier *E){//if the position on the E chess is a chess position, then hunt_chess return 1
-    int i,j,k,l,r=0;
-    Tab adverse_position = {.t =   {{0,0,0,0,0,0,0,0},
-                                    {0,0,0,0,0,0,0,0},
-                                    {0,0,0,0,0,0,0,0},
-                                    {0,0,0,0,0,0,0,0},
-                                    {0,0,0,0,0,0,0,0},
-                                    {0,0,0,0,0,0,0,0},
-                                    {0,0,0,0,0,0,0,0},
-                                    {0,0,0,0,0,0,0,0}
-                                    }};
-    Tab temp;
-    Position initiale;
-    int adverse_color_player = !E->joueur;
-        for(i=0;i<LARGEUR;i++){//all these loops are necessary to put at 1 all the adverse_position squares where the king would be in chess
-            for(j=0;j<LARGEUR;j++){
-                if(E->t[i][j].c==(adverse_color_player)){
-                    initiale.posx=j;
-                    initiale.posy=i;
-                    if(E->t[i][j].t != pion){
-                        temp = avail_moves[E->t[i][j].t](&initiale,E);
-                       // printf("\n---------%d_adverse_position----------\n",E->t[i][j].t);
-                       // print_binary_chess_table(temp.t);//for debug
-                       // printf("\n------------------------------------------\n");
-                    }
-                    else{
-                        temp = avail_pawn_attacked(&initiale,E);
-                    }
+enum joueur convert_piececolor_to_joueur(enum piececolor piececolor);
 
-                    for(k=0;k<LARGEUR;k++){
-                        for(l=0;l<LARGEUR;l++){
-                            adverse_position.t[k][l]= adverse_position.t[k][l] || temp.t[k][l];
+int hunt_chess(Echiquier *E){//if the position on the E chess is a chess position for the actual player, then hunt_chess return 1
+	int i,j,r=0;
+	int adverse_position[LARGEUR][LARGEUR] =    {{0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0}
+	};
+	Position initiale;
+	int *ptr_adverse_position;
+	ptr_adverse_position = (int *)adverse_position;
+	enum joueur adverse_color_player;
+	enum joueur color_piece;
+	if(E->joueur == JOUEUR_BLANC){
+		adverse_color_player = JOUEUR_NOIR;
+	}
+	else{
+		adverse_color_player = JOUEUR_BLANC;
+	}
+	for(i=0;i<LARGEUR;i++){//all these loops are necessary to put at 1 all the adverse_position squares where the king would be in chess
+		for(j=0;j<LARGEUR;j++){
+			color_piece = convert_piececolor_to_joueur(E->t[i][j].c);
+			if(color_piece == adverse_color_player){
+				initiale.posx=j;
+				initiale.posy=i;
+				if(E->t[i][j].t != pion){
+					avail_moves[E->t[i][j].t](&initiale,E, ptr_adverse_position);
+				}
+				else{
+					avail_pawn_attacked(&initiale,E, ptr_adverse_position);
+				}
+			}
+		}
+	}
+	for(i=0;i<LARGEUR;i++){
+		for(j=0;j<LARGEUR;j++){
 
-                            temp.t[k][l]=0;
-                        }
-                    }
-                }
-            }
-        }
+			switch(E->joueur){
+				case JOUEUR_BLANC : if(adverse_position[i][j] && E->white_king[i][j]){
+							    r=1;
+						    }
+						    break;
+				case JOUEUR_NOIR :  if(adverse_position[i][j] && E->black_king[i][j]){
+							    r=1;
+						    }
+						    break;
+				case NOTHING :
+						    break;
+			}
 
-       /* printf("\n---------adverse_position_attack----------\n");   //
-        print_binary_chess_table(adverse_position.t);               //for debug
-        printf("\n------------------------------------------\n");   //
-        printf("\n------------adverse_position--------------\n");
-        print_binary_chess_table(E->blacks_position);
-        printf("\n------------------------------------------\n");   //debug*/
-        for(i=0;i<LARGEUR;i++){
-            for(j=0;j<LARGEUR;j++){
-
-                switch(E->joueur){
-                    case JOUEUR_BLANC : if(adverse_position.t[i][j] && E->white_king[i][j]){
-                                        r=1;
-                                        }
-                    break;
-                    case JOUEUR_NOIR :  if(adverse_position.t[i][j] && E->black_king[i][j]){
-                                        r=1;
-                                        }
-                    break;
-		    case NOTHING :
-		    break;
-                }
-
-                if(r==1){break;}
-            }
-        }
-    return r;
+			if(r==1){break;}
+		}
+	}
+	return r;
 }

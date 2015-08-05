@@ -27,6 +27,7 @@ int eval(enum joueur ia_player, int test_three_plan_chess, Echiquier *sim_mv);
 unsigned int h_funct(void *chained_list, int size_chaine);
 Passant en_passant_test(Echiquier *E);
 int get_nb_occurrences(EchiquierSave *actual_plan, Historic_elements *list);
+int rand_val(int value, int val_minmax);
 
 
 Position2 ia_player(Historic_elements **list, Echiquier *E){
@@ -41,7 +42,9 @@ struct Position2 init_pos2(int a, int b, int c, int d){
 Position2 get_position(Historic_elements **list, Echiquier *E){
 	Position2 position_move;
 	Echiquier sim_chess;
-	Tab move_allowed;
+	int move_allowed[LARGEUR][LARGEUR];
+	int *ptr_move_allowed;
+	ptr_move_allowed = (int *)move_allowed;
 	Position Pini, Pfin;
 	int val_max = INT_MIN, value, depth = DEPTH;	
 	int i,j,k,l;
@@ -51,19 +54,23 @@ Position2 get_position(Historic_elements **list, Echiquier *E){
 			color_player = convert_piececolor_to_joueur(E->t[i][j].c);
 			if(color_player == E->joueur){
 				Pini = g(j,i);
-				move_allowed = avail_moves[E->t[i][j].t](&Pini,E);
+				avail_moves[E->t[i][j].t](&Pini,E, ptr_move_allowed);
 				for(k=0;k<LARGEUR;k++){
 					for(l=0;l<LARGEUR;l++){
-						if(move_allowed.t[k][l]){
+						if(move_allowed[k][l]){
 							Pfin = g(l,k);
 							sim_chess  = simulate_move(&Pini, &Pfin, E);
 							value = min(E->joueur, &sim_chess, depth, list);
+							if(value == val_max){
+								val_max = rand_val(value,val_max);
+								position_move = init_pos2(j,i,l,k);
+							}
+							else if(value > val_max){
+								val_max = value;
+								position_move = init_pos2(j,i,l,k);
+							}
 						}
-						if(value > val_max){
-							val_max = value;
-							position_move = init_pos2(j,i,l,k);
-						}
-						move_allowed.t[k][l] = 0;
+						move_allowed[k][l] = 0;
 					}
 				}
 			}
@@ -73,23 +80,28 @@ Position2 get_position(Historic_elements **list, Echiquier *E){
 }
 
 Echiquier simulate_move(Position *Pini, Position *Pfin, Echiquier *E){
+
 	Echiquier simulate_move = *E;
 	simulate_move.t[Pini->posy][Pini->posx]=f(pion,nothing,Pini->posx,Pini->posy,0);
 	switch(E->joueur){
 		case JOUEUR_NOIR : simulate_move.joueur = JOUEUR_BLANC;
 				   if(E->t[Pini->posy][Pini->posx].t == roi){
 					   simulate_move.black_king[Pini->posy][Pini->posx]=0;
-					   simulate_move.black_king[Pfin->posy][Pfin->posx]=0;
+					   simulate_move.black_king[Pfin->posy][Pfin->posx]=1;
 				   }
+				   simulate_move.t[Pfin->posy][Pfin->posx] 
+					   = f(E->t[Pini->posy][Pini->posx].t,black,Pfin->posx,Pfin->posy,E->t[Pini->posy][Pini->posx].m +1);
 				   simulate_move.blacks_position[Pini->posy][Pini->posx] = 0;
 				   simulate_move.blacks_position[Pfin->posy][Pfin->posx] = 1;
-				   simulate_move.whites_position[Pfin->posy][Pfin->posx] = 1;
+				   simulate_move.whites_position[Pfin->posy][Pfin->posx] = 0;
 				   break;
 		case JOUEUR_BLANC : simulate_move.joueur = JOUEUR_NOIR;
 				   if(E->t[Pini->posy][Pini->posx].t == roi){
 					   simulate_move.white_king[Pini->posy][Pini->posx] = 0;
-					   simulate_move.white_king[Pfin->posy][Pfin->posx] = 0;
+					   simulate_move.white_king[Pfin->posy][Pfin->posx] = 1;
 				   }
+				   simulate_move.t[Pfin->posy][Pfin->posx] 
+					   = f(E->t[Pini->posy][Pini->posx].t,white,Pfin->posx,Pfin->posy,E->t[Pini->posy][Pini->posx].m +1);
 				   simulate_move.whites_position[Pini->posy][Pini->posx] = 0;
 				   simulate_move.whites_position[Pfin->posy][Pfin->posx] = 1;
 				   simulate_move.blacks_position[Pfin->posy][Pfin->posx] = 0;
@@ -97,7 +109,7 @@ Echiquier simulate_move(Position *Pini, Position *Pfin, Echiquier *E){
 		case NOTHING : fprintf(stderr, "error : enum joueur take NOTHING value");
 			       break;
 	}
-	simulate_move.last_move = g(Pfin->posy,Pfin->posx);
+	simulate_move.last_move = g(Pfin->posx,Pfin->posy);
 	return simulate_move;
 }
 
@@ -105,7 +117,9 @@ int min(enum joueur ia_player, Echiquier *sim_mv, int depth, Historic_elements *
 	int value, min_val = INT_MAX;
 	enum joueur color_adv_player;
 	Position Pini,Pfin;
-	Tab mv_allowed;
+	int mv_allowed[LARGEUR][LARGEUR];
+	int *ptr_mv_allowed;
+	ptr_mv_allowed = (int *)mv_allowed;
 	Echiquier sim_adverse_mv = *sim_mv;
 	int i,j,k,l;
 	int test_three_plan_chess = test_three_plan(list, sim_mv);
@@ -117,18 +131,21 @@ int min(enum joueur ia_player, Echiquier *sim_mv, int depth, Historic_elements *
 			color_adv_player = convert_piececolor_to_joueur(sim_adverse_mv.t[i][j].c);
 			if(color_adv_player == sim_mv->joueur){
 				Pini = g(j,i);
-				mv_allowed = avail_moves[sim_mv->t[i][j].t](&Pini, sim_mv);
+				avail_moves[sim_mv->t[i][j].t](&Pini, sim_mv, ptr_mv_allowed);
 				for(k=0;k<LARGEUR;k++){
 					for(l=0;l<LARGEUR;l++){
-						if(mv_allowed.t[k][l]){
+						if(mv_allowed[k][l]){
 							Pfin = g(l,k);
 							sim_adverse_mv = simulate_move(&Pini, &Pfin, sim_mv);
 							value = max(ia_player, &sim_adverse_mv, depth - 1, list);
+							if(value == min_val){
+								min_val = rand_val(value, min_val);
+							}
 							if(value < min_val){
 								min_val = value;
 							}
 						}
-						mv_allowed.t[k][l] = 0;
+						mv_allowed[k][l] = 0;
 					}
 				}
 			}
@@ -141,7 +158,9 @@ int max(enum joueur ia_player, Echiquier *sim_mv, int depth, Historic_elements *
 	int value, max_val = INT_MIN;
 	enum joueur color_player;
 	Position Pini,Pfin;
-	Tab mv_allowed;
+	int mv_allowed[LARGEUR][LARGEUR];
+	int *ptr_mv_allowed;
+	ptr_mv_allowed = (int *)mv_allowed;
 	Echiquier sim_new_mv = *sim_mv;
 	int i,j,k,l;
 	int test_three_plan_chess = test_three_plan(list, sim_mv);
@@ -153,18 +172,21 @@ int max(enum joueur ia_player, Echiquier *sim_mv, int depth, Historic_elements *
 			color_player = convert_piececolor_to_joueur(sim_new_mv.t[i][j].c);
 			if(color_player == sim_mv->joueur){
 				Pini = g(j,i);
-				mv_allowed = avail_moves[sim_mv->t[i][j].t](&Pini, sim_mv);
+				avail_moves[sim_mv->t[i][j].t](&Pini, sim_mv, ptr_mv_allowed);
 				for(k=0;k<LARGEUR;k++){
 					for(l=0;l<LARGEUR;l++){
-						if(mv_allowed.t[k][l]){
+						if(mv_allowed[k][l]){
 							Pfin = g(l,k);
 							sim_new_mv = simulate_move(&Pini, &Pfin, sim_mv);
 							value = min(ia_player, &sim_new_mv, depth - 1, list);
+							if(value == max_val){
+								max_val = rand_val(value, max_val);
+							}
 							if(value > max_val){
 								max_val = value;
 							}
 						}
-						mv_allowed.t[k][l] = 0;
+						mv_allowed[k][l] = 0;
 					}
 				}
 			}
@@ -175,7 +197,9 @@ int max(enum joueur ia_player, Echiquier *sim_mv, int depth, Historic_elements *
 
 int eval(enum joueur ia_player, int test_three_plan_chess, Echiquier *sim_mv){
 	enum joueur actual_player;
-	int val_ia, val_adv, i,j;
+	int i,j;
+	int val_ia = 0;
+	int val_adv = 0;
 	if(mat(sim_mv)){
 		if(sim_mv->joueur == ia_player){
 			return INT_MIN;
@@ -185,7 +209,10 @@ int eval(enum joueur ia_player, int test_three_plan_chess, Echiquier *sim_mv){
 		}
 	}
 	if(hunt_chess(sim_mv)){
-		return INT_MIN + 2;
+		if(sim_mv->joueur == ia_player){
+			return INT_MIN + 2;
+		}
+		return INT_MAX - 2;
 	}
 	if(pat(sim_mv) || test_three_plan_chess){
 		return INT_MIN +1;
@@ -253,3 +280,9 @@ int test_three_plan(Historic_elements **list, Echiquier *sim_mv){
 	return r;
 }
 
+int rand_val(int value, int val_minmax){
+	if(rand()%2){
+		return value;
+	}
+	return val_minmax;
+}

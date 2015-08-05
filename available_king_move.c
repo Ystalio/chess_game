@@ -1,77 +1,54 @@
 #include "struct_piece.h"
 #include "avail_move.h"
 
-Tab avail_king_move(/*int (*adverse)[8], int (*mine_piece)[8], */Position *Pini, Echiquier *E){
-    int i,j,k,l;
-    Tab avail_move = {.t = {{0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0}
-                            }};
-    //Knight have 8 different movement : (i-1,j-1) (i-1,j) (i-1,j+1) (i,j-1) (i,j+1) (i+1,j-1) (i+1,j) (i+1,j+1)
-    i = Pini->posy;
-    j = Pini->posx;
+int check_pieces_position(int i, int j, enum piececolor, Echiquier *chess);
 
-    int mine_piece[LARGEUR][LARGEUR];
-    switch(E->t[i][j].c){
-	    case white : for(k=0;k<LARGEUR;k++){
-				 for(l=0;l<LARGEUR;l++){
-					 mine_piece[k][l] = E->whites_position[k][l];
-				 }
-			 }
-			 //mine_piece = E->whites_position;
-			 break;
-	    case black : for(k=0;k<LARGEUR;k++){
-				 for(l=0;l<LARGEUR;l++){
-					 mine_piece[k][l] = E->blacks_position[k][l];
-				 }
-			 }
-			 //mine_piece = E->blacks_position;
-			 break;
-	    case nothing :
-			 break;
-    }
-    if(i-1>=0){
-        if(j-1>=0){
-            if(mine_piece[i-1][j-1]==0){avail_move.t[i-1][j-1]=1;}
-        }
-        if(mine_piece[i-1][j]==0){
-            avail_move.t[i-1][j]=1;
-        }
-        if(j+1<8){
-            if(mine_piece[i-1][j+1]==0){avail_move.t[i-1][j+1]=1;}
-        }
-        }
-        if(j-1>=0){
-            if(mine_piece[i][j-1]==0){
-                avail_move.t[i][j-1]=1;
-            }
-        }
-        if(j+1<8){
-            if(mine_piece[i][j+1]==0){
-                avail_move.t[i][j+1]=1;
-            }
-        }
+void avail_king_move(Position *Pini, Echiquier *E, int *temp){
+	int i,j;
+	i = Pini->posy;
+	j = Pini->posx;
 
-        if(i+1<8){
-            if(j-1>=0){
-                if(mine_piece[i+1][j-1]==0){
-                    avail_move.t[i+1][j-1]=1;
-                }
-            }
-            if(mine_piece[i+1][j]==0){
-                avail_move.t[i+1][j]=1;
-            }
-            if(j+1<8){
-                if(mine_piece[i+1][j+1]==0){
-                    avail_move.t[i+1][j+1]=1;
-                }
-            }
-        }
+	enum piececolor color = E->t[i][j].c;
 
-    return avail_move;
+	if(i-1>=0){
+		if(j-1>=0){
+			if(check_pieces_position(i-1,j-1, color, E) == 0){
+				temp[(i-1)*LARGEUR + j-1]=1;
+			}
+		}
+		if(check_pieces_position(i-1,j,color,E)==0){
+			temp[(i-1)*LARGEUR + j]=1;
+		}
+		if(j+1<8){
+			if(check_pieces_position(i-1, j+1, color, E) == 0){
+				temp[(i-1)*LARGEUR + j+1]=1;
+			}
+		}
+	}
+	if(j-1>=0){
+		if(check_pieces_position(i, j-1, color, E) == 0){
+			temp[i*LARGEUR + j-1]=1;
+		}
+	}
+	if(j+1<8){
+		if(check_pieces_position(i, j+1, color, E) == 0){
+			temp[i*LARGEUR + j+1]=1;
+		}
+	}
+
+	if(i+1<8){
+		if(j-1>=0){
+			if(check_pieces_position(i+1, j-1, color, E) == 0){
+				temp[(i+1)*LARGEUR + j-1]=1;
+			}
+		}
+		if(check_pieces_position(i+1, j, color, E) == 0){
+			temp[(i+1)*LARGEUR + j]=1;
+		}
+		if(j+1<8){
+			if(check_pieces_position(i+1, j+1, color, E) == 0){
+				temp[(i+1)*LARGEUR + j+1]=1;
+			}
+		}
+	}
 }
