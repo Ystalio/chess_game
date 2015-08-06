@@ -33,8 +33,16 @@ void mdfy_king_position(int i, int j, enum joueur player, int value, Echiquier *
 
 
 
-Position2 ia_player(Historic_elements **list, Echiquier *E){
-	return get_position(list, E);	
+int ia_player(Historic_elements **list, Echiquier *E){
+	Position2 Position = get_position(list, E);
+	enum result_mv make_move = move_piece(E, &Position);
+	if(make_move == valid){
+		return 1;
+	}
+	else{
+		fprintf(stderr, "error : ia get a wrong move");
+		exit(1);
+	}
 }
 
 struct Position2 init_pos2(int a, int b, int c, int d){
@@ -87,13 +95,19 @@ Echiquier simulate_move(Position *Pini, Position *Pfin, Echiquier *E){
 	enum joueur player = E->joueur;
 	enum joueur player_adv;
 	enum piececolor color;
+	int Pfin_passant;
+	int Pini_passant;
 	if(player == JOUEUR_BLANC){
 		player_adv = JOUEUR_NOIR;
 		color = white;
+		Pfin_passant = Pfin->posy+1;	
+		Pini_passant = Pini->posy+1;
 	}
 	else{
 		player_adv = JOUEUR_BLANC;
 		color = black;
+		Pfin_passant = Pfin->posy-1;
+		Pini_passant = Pini->posy-1;
 	}
 	Echiquier simulate_move = *E;
 	simulate_move.t[Pini->posy][Pini->posx]=f(pion,nothing,Pini->posx,Pini->posy,0);
@@ -108,6 +122,37 @@ Echiquier simulate_move(Position *Pini, Position *Pfin, Echiquier *E){
 	mdfy_pieces_position(Pfin->posy, Pfin->posx, player, 1, &simulate_move);
 	mdfy_pieces_position(Pfin->posy, Pfin->posx, player_adv, 0, &simulate_move);
 	simulate_move.last_move = g(Pfin->posx,Pfin->posy);
+
+	if(E->t[Pini->posy][Pini->posx].t==pion && E->last_move.posy == Pini->posy){//Necessary to clean the adverse pawn's square when "en passant" occurs
+		if((E->t[Pini->posy][Pini->posx+1].t == pion && E->t[Pini->posy][Pini->posx+1].m == 1 && Pfin->posx == Pini->posx+1) ||
+			(E->t[Pini->posy][Pini->posx-1].t == pion && E->t[Pini->posy][Pini->posx-1].m == 1 && Pfin->posx == Pini->posx-1)){
+			
+			simulate_move.t[Pfin_passant][Pfin->posx] = f(pion, nothing, Pini->posx, Pini_passant, 0);	
+			mdfy_pieces_position(Pfin_passant, Pfin->posx, player, 0, &simulate_move);
+		/*	switch (E->joueur){
+				case JOUEUR_BLANC : simulate_move.t[Pfin->posy+1][Pfin->posx]=f(pion,nothing,Pini->posx,Pini->posy+1,0);
+						    simulate_move.blacks_position[Pfin->posy+1][Pfin->posx]=0;
+						    break;
+				case JOUEUR_NOIR :  simulate_move.t[Pfin->posy-1][Pfin->posx]=f(pion,nothing,Pini->posx,Pini->posy-1,0);
+						    simulate_move.whites_position[Pfin->posy-1][Pfin->posx]=0;
+						    break;
+				case NOTHING :
+						    break;
+			}*/
+		}
+/*		else if(E->t[Pini->posy][Pini->posx-1].t == pion && E->t[Pini->posy][Pini->posx-1].m == 1 && Pfin->posx == Pini->posx-1){
+			switch (E->joueur){
+				case JOUEUR_BLANC : simulate_move.t[Pfin->posy+1][Pfin->posx]=f(pion,nothing,Pini->posx,Pini->posy+1,0);
+						    simulate_move.blacks_position[Pfin->posy+1][Pfin->posx]=0;
+						    break;
+				case JOUEUR_NOIR :  simulate_move.t[Pfin->posy-1][Pfin->posx]=f(pion,nothing,Pini->posx,Pini->posy-1,0); 
+						    simulate_move.whites_position[Pfin->posy-1][Pfin->posx]=0;
+						    break;
+				case NOTHING :
+						    break;
+			}
+		}*/
+	}
 	return simulate_move;
 }
 
@@ -223,33 +268,33 @@ int eval(enum joueur ia_player, int test_three_plan_chess, Echiquier *sim_mv){
 			else if(actual_player == ia_player){
 				switch(sim_mv->t[i][j].t){
 					case pion :	val_ia = val_ia + VAL_PION;
-					break;
+							break;
 					case tour :	val_ia = val_ia + VAL_TOUR;
-					break;
+							break;
 					case fou :	val_ia = val_ia + VAL_FOU;
-					break;
+							break;
 					case cavalier :	val_ia = val_ia + VAL_CAVALIER;
-					break;
+							break;
 					case dame :	val_ia = val_ia + VAL_DAME;
-					break;
+							break;
 					case roi :
-					break;
+							break;
 				}
 			}
 			else if(actual_player != ia_player){
 				switch(sim_mv->t[i][j].t){
 					case pion :	val_adv = val_adv + VAL_PION;
-					break;
+							break;
 					case tour :	val_adv = val_adv + VAL_TOUR;
-					break;
+							break;
 					case fou :	val_adv = val_adv + VAL_FOU;
-					break;
+							break;
 					case cavalier :	val_adv = val_adv + VAL_CAVALIER;
-					break;
+							break;
 					case dame :	val_adv = val_adv + VAL_DAME;
-					break;
+							break;
 					case roi :
-					break;
+							break;
 				}
 			}
 		}

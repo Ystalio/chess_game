@@ -19,7 +19,6 @@ int three_plan_chess(Historic_elements **list,Echiquier *E);
 
 int main(int argc, char *argv[])
 {
-	Position2 mvt_j1, mvt_j2;
 	Echiquier B = E;
 	double end_game;
 	enum joueur_type joueur1, joueur2;
@@ -32,14 +31,14 @@ int main(int argc, char *argv[])
 			printf("\nChoisissez qui est le joueur blanc parmi ces choix :\n");
 			printf("1. joueur\n2. ia\n");
 			if(fgets(joueur1_temp,sizeof(joueur1_temp),stdin)==NULL){
-				fprintf(stderr,"error fgets");
+				fprintf(stderr,"error : fgets, main.c:34");
 				exit(1);
 			}
 			flush_stdin();
 			printf("\nChoisissez qui est le joueur noir parmi ces choix :\n");
 			printf("1. joueur\n2. ia\n");
 			if(fgets(joueur2_temp,sizeof(joueur2_temp),stdin)==NULL){
-				fprintf(stderr,"error fgets");
+				fprintf(stderr,"error : fgets in main.c:41");
 				exit(1);
 			}
 			flush_stdin();
@@ -61,16 +60,14 @@ int main(int argc, char *argv[])
 				printf("Vous etes en echec !\n");
 			}
 			switch(B.joueur){
-				case JOUEUR_BLANC : mvt_j1 = get_mvt[joueur1](list, &B); 
-						    right_move =  move_piece(&B,&mvt_j1);
+				case JOUEUR_BLANC : right_move = get_mvt[joueur1](list, &B); 
 						    break;
-				case JOUEUR_NOIR : mvt_j2 = get_mvt[joueur2](list, &B); 
-						   right_move = move_piece(&B,&mvt_j2);
+				case JOUEUR_NOIR : right_move = get_mvt[joueur2](list, &B); 
 						   break;
 				case NOTHING :
 						   break;
 			}
-			if(right_move){
+			if(right_move == 1){
 				test_three_plan_chess = three_plan_chess(list, &B);
 			}
 			else{

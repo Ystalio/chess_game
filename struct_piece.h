@@ -88,5 +88,5 @@ typedef struct All_pieces{
 
 void modification_tab(Position Pini, Position Pend, Tab *r);//save piece movement
 
-void print_binary_chess_table(int (*b)[LARGEUR]);
+void print_binary_chess_table(int *b);
 #endif // STRUCT_PIECE_H

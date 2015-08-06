@@ -8,16 +8,19 @@
 
 #define POSITION_BUFFER_LEN	5
 
-Position2 get_joueur_mvt(Historic_elements **list, Echiquier *E){
+int get_joueur_mvt(Historic_elements **list, Echiquier *E){
+
 	char movement[POSITION_BUFFER_LEN];
 	int correct_move=0;
 	static int example_move=1;
-	char *joueur_color;
+	char *joueur_color, *pieces_color;
 	Position initiale, finale;
 	switch(E->joueur){
 		case JOUEUR_BLANC : joueur_color = "[Blanc]"; 
+				    pieces_color = "blanches";
 				    break;
 		case JOUEUR_NOIR : joueur_color = "[Noir]";
+				   pieces_color = "noires";
 				   break;
 		case NOTHING :
 				   break;
@@ -41,5 +44,27 @@ Position2 get_joueur_mvt(Historic_elements **list, Echiquier *E){
 		}
 	}
 	Position2 mvt_ini_fin = {initiale.posx,initiale.posy,finale.posx,finale.posy};
-	return mvt_ini_fin;
+	enum result_mv make_move = move_piece(E, &mvt_ini_fin);
+	if(make_move == valid){
+		return 1;
+	}
+	else if(make_move == chess){
+		printf("\nVous ne pouvez jouer ce coup, votre roi serait en echec par ce deplacement.\n");
+		getchar();
+		return 0;
+	}
+	else if(make_move == bad_mv){
+		printf("\nCette piece ne peut aller la.\n");
+		getchar();
+		return 0;
+	}
+	else if(make_move == bad_color){
+		printf("Vous ne pouvez deplacer que les pieces %s\n", pieces_color);
+		getchar();
+		return 0;
+	}
+	else{
+		fprintf(stderr,"error : move_piece return non-sense value");
+		return 0;
+	}
 }
